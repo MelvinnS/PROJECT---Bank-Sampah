@@ -220,6 +220,36 @@ export default function DetailVerifikasiSetoran() {
     )
   }
 
+  // Dedicated Error Screen if detail not found / fetch failed
+  if (errorMsg && !detail) {
+    return (
+      <div className="flex flex-col gap-6 max-w-2xl mx-auto py-12 text-center items-center">
+        <div className="flex h-16 w-16 items-center justify-center rounded-3xl bg-red-50 text-red-600 mb-2 border border-red-100 shadow-xs">
+          <AlertCircle size={32} />
+        </div>
+        <h2 className="font-display text-xl font-bold text-ink">Gagal Memuat Detail Setoran</h2>
+        <p className="text-xs sm:text-sm text-gray-500 max-w-md leading-relaxed">{errorMsg}</p>
+        <div className="mt-4 flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => navigate('/admin/verifikasi-setoran')}
+            className="rounded-full border border-gray-200 bg-white px-5 py-2.5 text-xs font-bold text-gray-700 hover:bg-gray-50 transition-all cursor-pointer shadow-xs"
+          >
+            ← Kembali ke Daftar
+          </button>
+          <button
+            type="button"
+            onClick={fetchDetail}
+            className="rounded-full bg-brand-600 px-5 py-2.5 text-xs font-bold text-white shadow-sm hover:bg-brand-700 transition-all cursor-pointer flex items-center gap-1.5"
+          >
+            <RefreshCw size={13} />
+            <span>Coba Lagi</span>
+          </button>
+        </div>
+      </div>
+    )
+  }
+
   const kodeSetor =
     detail?.kodeSetor || detail?.kode || `SET-${String(id || '').slice(0, 8)}`
   const namaNasabah =

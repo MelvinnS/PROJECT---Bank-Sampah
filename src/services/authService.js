@@ -46,3 +46,14 @@ export const loginUser = async (payload, maybePassword) => {
 
   return api.post('/auth/login', body)
 }
+
+/**
+ * 4. Seed Database
+ * POST /seed
+ * Header: x-app-key
+ */
+export const seedDatabase = async (appKey) => {
+  return axios.post(`${BASE_URL}/seed`, {}, {
+    headers: { 'x-app-key': appKey },
+  })
+}

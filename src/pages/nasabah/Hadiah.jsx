@@ -584,8 +584,8 @@ export default function Hadiah() {
         {/* 4-Column Grid List Hadiah */}
         {!loading && hadiahList.length > 0 && (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-4">
-            {hadiahList.map((gift) => {
-              const id = String(gift.id ?? gift.hadiahId ?? Math.random())
+            {hadiahList.map((gift, idx) => {
+              const id = String(gift.id ?? gift.hadiahId ?? gift._id ?? idx)
               const nama = gift.namaHadiah ?? gift.nama ?? 'Hadiah'
               const poinDibutuhkan = Number(gift.poinDibutuhkan ?? gift.poin ?? 0)
               const stok = Number(gift.stok ?? gift.stokTersisa ?? 0)

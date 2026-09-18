@@ -1,27 +1,11 @@
-﻿import { useEffect, useState } from 'react'
-import { ChevronRight, Leaf, Recycle, Star, Gift, ClipboardList } from 'lucide-react'
+﻿import { useEffect, useState, useCallback } from 'react'
+import { ChevronRight, Leaf, Recycle, Star, Gift, ClipboardList, RefreshCw, AlertCircle } from 'lucide-react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import TransaksiItem from '../../components/nasabah/TransaksiItem'
 import WasteIcon from '../../components/nasabah/WasteIcon'
 import { getDashboardSummary, getKategoriSampah } from '../../services/nasabahService'
 import { resolveFotoUrl } from '../../services/api'
-
-const DUMMY_KATEGORI = [
-  { id: '1', namaKategori: 'Botol Plastik PET', hargaPerKg: 3500, poinPerKg: 10, jenis: 'plastik' },
-  { id: '2', namaKategori: 'Kardus & Karton',   hargaPerKg: 2000, poinPerKg: 5,  jenis: 'kertas'  },
-  { id: '3', namaKategori: 'Kaleng Aluminium',  hargaPerKg: 12000, poinPerKg: 30, jenis: 'logam'  },
-  { id: '4', namaKategori: 'Botol Kaca Bening', hargaPerKg: 1500, poinPerKg: 4,  jenis: 'kaca'   },
-]
-
-const DUMMY_SUMMARY = {
-  saldoPoinSaatIni: 2450,
-  totalSampahDisetorKg: 12.5,
-  totalPoinDidapat: 5250,
-  totalTransaksiSetor: 4,
-  transaksiTerakhirSetor: { kodeSetor: 'SS20250412-001', tanggal: '12 Apr 2025', beratKg: 2.5, poin: 125 },
-  transaksiTerakhirTukar: { kodePenukaran: 'TP20250410-002', tanggal: '10 Apr 2025', hadiah: 'Tumbler Stainless', poin: 750 },
-}
 
 // Decorative plant SVG illustration in top-right greeting
 function PlantIllustration({ className = '' }) {
@@ -65,75 +49,102 @@ function PlantCtaIllustration({ className = '' }) {
 export default function Beranda() {
   const { isGuest, session } = useAuth()
   const navigate = useNavigate()
-  const [kategori, setKategori] = useState(DUMMY_KATEGORI)
-  const [summary, setSummary]   = useState(DUMMY_SUMMARY)
+  const [kategori, setKategori] = useState([])
+  const [summary, setSummary]   = useState({
+    saldoPoinSaatIni: 0,
+    totalSampahDisetorKg: 0,
+    totalPoinDidapat: 0,
+    totalTransaksiSetor: 0,
+    transaksiTerakhirSetor: null,
+    transaksiTerakhirTukar: null,
+  })
+  const [loading, setLoading] = useState(true)
+  const [errorMsg, setErrorMsg] = useState('')
+
+  const loadData = useCallback(async () => {
+    setLoading(true)
+    setErrorMsg('')
+
+    try {
+      // 1. Fetch Kategori Sampah
+      const katRes = await getKategoriSampah()
+      const katData = Array.isArray(katRes.data?.data)
+        ? katRes.data.data
+        : Array.isArray(katRes.data)
+        ? katRes.data
+        : []
+      setKategori(katData)
+
+      // 2. Fetch Dashboard Summary if not guest
+      if (!isGuest) {
+        const sumRes = await getDashboardSummary()
+        const data = sumRes.data?.data ?? sumRes.data
+
+        if (data) {
+          const setorList = Array.isArray(data.setorTerakhir) ? data.setorTerakhir : []
+          const tukarList = Array.isArray(data.penukaranTerakhir) ? data.penukaranTerakhir : []
+
+          // Hitung total berat sampah yang disetor dari array setorTerakhir
+          const calculatedTotalBerat = setorList.reduce(
+            (acc, item) => acc + Number(item.totalBeratKg ?? item.beratKg ?? 0),
+            0
+          )
+
+          // Transaksi terakhir setor
+          let latestSetor = null
+          if (setorList.length > 0) {
+            const s = setorList[0]
+            latestSetor = {
+              kodeSetor: s.kodeSetor ?? '',
+              tanggal: s.tanggal ?? '',
+              beratKg: Number(s.totalBeratKg ?? s.beratKg ?? 0),
+              poin: Number(s.totalPoin ?? s.poin ?? 0),
+              status: s.status ?? '',
+            }
+          }
+
+          // Transaksi terakhir tukar
+          let latestTukar = null
+          if (tukarList.length > 0) {
+            const t = tukarList[0]
+            latestTukar = {
+              kodePenukaran: t.kodePenukaran ?? t.kode ?? '',
+              tanggal: t.tanggal ?? '',
+              hadiah: t.hadiah?.namaHadiah ?? t.namaHadiah ?? t.hadiah ?? 'Hadiah',
+              poin: Number(t.totalPoin ?? t.poin ?? 0),
+              status: t.status ?? '',
+            }
+          }
+
+          setSummary({
+            saldoPoinSaatIni: Number(data.saldoPoin ?? data.saldoPoinSaatIni ?? 0),
+            totalSampahDisetorKg:
+              data.totalSampahDisetorKg !== undefined
+                ? Number(data.totalSampahDisetorKg ?? 0)
+                : Math.round(calculatedTotalBerat * 10) / 10,
+            totalPoinDidapat: Number(data.totalPoinDiperoleh ?? data.totalPoinDidapat ?? 0),
+            totalTransaksiSetor: Number(data.totalPengajuanSetor ?? data.totalTransaksiSetor ?? 0),
+            transaksiTerakhirSetor: latestSetor,
+            transaksiTerakhirTukar: latestTukar,
+          })
+        }
+      }
+    } catch (err) {
+      console.error('[Beranda loadData error]:', err)
+      const msg =
+        err.response?.data?.message ||
+        err.response?.data?.error ||
+        err.message ||
+        'Gagal memuat data beranda. Periksa koneksi Anda.'
+      setErrorMsg(msg)
+    } finally {
+      setLoading(false)
+    }
+  }, [isGuest])
 
   useEffect(() => {
-    let active = true
-    getKategoriSampah()
-      .then((res) => active && setKategori(res.data?.data ?? DUMMY_KATEGORI))
-      .catch(() => active && setKategori(DUMMY_KATEGORI))
-
-    if (!isGuest) {
-      getDashboardSummary()
-        .then((res) => {
-          const data = res.data?.data ?? res.data
-          if (active && data) {
-            const setorList = Array.isArray(data.setorTerakhir) ? data.setorTerakhir : []
-            const tukarList = Array.isArray(data.penukaranTerakhir) ? data.penukaranTerakhir : []
-
-            // Hitung total berat sampah yang disetor dari array setorTerakhir
-            const calculatedTotalBerat = setorList.reduce(
-              (acc, item) => acc + Number(item.totalBeratKg ?? item.beratKg ?? 0),
-              0
-            )
-
-            // Transaksi terakhir setor
-            let latestSetor = null
-            if (setorList.length > 0) {
-              const s = setorList[0]
-              latestSetor = {
-                kodeSetor: s.kodeSetor ?? '',
-                tanggal: s.tanggal ?? '',
-                beratKg: Number(s.totalBeratKg ?? s.beratKg ?? 0),
-                poin: Number(s.totalPoin ?? s.poin ?? 0),
-                status: s.status ?? '',
-              }
-            }
-
-            // Transaksi terakhir tukar
-            let latestTukar = null
-            if (tukarList.length > 0) {
-              const t = tukarList[0]
-              latestTukar = {
-                kodePenukaran: t.kodePenukaran ?? t.kode ?? '',
-                tanggal: t.tanggal ?? '',
-                hadiah: t.hadiah?.namaHadiah ?? t.namaHadiah ?? t.hadiah ?? 'Hadiah',
-                poin: Number(t.totalPoin ?? t.poin ?? 0),
-                status: t.status ?? '',
-              }
-            }
-
-            setSummary({
-              saldoPoinSaatIni: Number(data.saldoPoin ?? data.saldoPoinSaatIni ?? 0),
-              totalSampahDisetorKg:
-                data.totalSampahDisetorKg !== undefined
-                  ? Number(data.totalSampahDisetorKg ?? 0)
-                  : Math.round(calculatedTotalBerat * 10) / 10,
-              totalPoinDidapat: Number(data.totalPoinDiperoleh ?? data.totalPoinDidapat ?? 0),
-              totalTransaksiSetor: Number(data.totalPengajuanSetor ?? data.totalTransaksiSetor ?? 0),
-              transaksiTerakhirSetor: latestSetor,
-              transaksiTerakhirTukar: latestTukar,
-            })
-          }
-        })
-        .catch((err) => {
-          console.warn('[Beranda getDashboardSummary error]:', err)
-          if (active) setSummary(DUMMY_SUMMARY)
-        })
-    }
-    return () => { active = false }
-  }, [isGuest])
+    loadData()
+  }, [loadData])
 
   const goToProtected = (path) => {
     if (isGuest) navigate('/login', { state: { from: path } })
@@ -142,8 +153,6 @@ export default function Beranda() {
 
   const nama = session.user?.namaNasabah || session.user?.nama || 'Nasabah'
 
-  // Visual-only monthly target used to render the progress bar on "Dampak Kamu"
-  // (the API doesn't expose a target field yet).
   const TARGET_KG = 10
   const targetPercent = Math.min(
     100,
@@ -169,92 +178,128 @@ export default function Beranda() {
         </div>
       </div>
 
+      {/* ── Error Banner ── */}
+      {errorMsg && (
+        <div className="flex items-center justify-between gap-3 rounded-2xl bg-red-50 border border-red-200 p-4 text-xs text-red-700 shadow-xs animate-fadeIn">
+          <div className="flex items-center gap-2">
+            <AlertCircle size={16} className="shrink-0 text-red-500" />
+            <span className="font-medium">{errorMsg}</span>
+          </div>
+          <button
+            type="button"
+            onClick={loadData}
+            className="inline-flex items-center gap-1 font-bold underline text-red-800 hover:text-red-900 cursor-pointer"
+          >
+            <RefreshCw size={13} />
+            <span>Coba lagi</span>
+          </button>
+        </div>
+      )}
+
       {/* ── Row 1: Saldo Poin + Dampak Kamu ── */}
       {!isGuest && (
         <div className="grid grid-cols-1 md:grid-cols-[1.4fr_1fr] gap-4 sm:gap-5">
           {/* Card Saldo Poin — solid dark green */}
           <div className="relative overflow-hidden rounded-2xl bg-[#163421] p-5 sm:p-6 text-white shadow-card">
-            <div className="relative flex flex-col sm:flex-row sm:items-stretch gap-4 sm:gap-5">
-              {/* Left: Saldo Poin */}
-              <div className="flex-1 min-w-0 py-0.5">
-                <p className="text-xs font-semibold text-brand-200 mb-1.5">Saldo Poin</p>
-                <div className="flex items-baseline gap-2">
-                  <Star size={22} className="fill-amber-300 text-amber-300 shrink-0 mb-0.5" />
-                  <span className="font-display text-4xl font-bold tabular-nums">
-                    {(summary.saldoPoinSaatIni ?? 0).toLocaleString('id-ID')}
-                  </span>
-                  <span className="text-sm font-medium text-brand-200">Poin</span>
+            {loading ? (
+              <div className="animate-pulse space-y-4">
+                <div className="h-4 w-28 bg-white/20 rounded" />
+                <div className="h-10 w-44 bg-white/20 rounded" />
+                <div className="h-6 w-36 bg-white/20 rounded-full" />
+              </div>
+            ) : (
+              <div className="relative flex flex-col sm:flex-row sm:items-stretch gap-4 sm:gap-5">
+                {/* Left: Saldo Poin */}
+                <div className="flex-1 min-w-0 py-0.5">
+                  <p className="text-xs font-semibold text-brand-200 mb-1.5">Saldo Poin</p>
+                  <div className="flex items-baseline gap-2">
+                    <Star size={22} className="fill-amber-300 text-amber-300 shrink-0 mb-0.5" />
+                    <span className="font-display text-4xl font-bold tabular-nums">
+                      {(summary.saldoPoinSaatIni ?? 0).toLocaleString('id-ID')}
+                    </span>
+                    <span className="text-sm font-medium text-brand-200">Poin</span>
+                  </div>
+
+                  {/* +X poin bulan ini badge */}
+                  <div className="mt-3">
+                    <span className="inline-flex items-center gap-1 rounded-full bg-white/15 backdrop-blur-xs px-3 py-1 text-xs font-semibold text-emerald-100">
+                      +{(summary.totalPoinDidapat ?? 0).toLocaleString('id-ID')} poin bulan ini
+                    </span>
+                  </div>
+
+                  {/* Link Lihat Riwayat */}
+                  <button
+                    onClick={() => goToProtected('/riwayat')}
+                    className="mt-4 flex items-center gap-1 text-xs font-semibold text-brand-200 hover:text-white transition-colors cursor-pointer"
+                  >
+                    Lihat Riwayat <ChevronRight size={13} />
+                  </button>
                 </div>
 
-                {/* +X poin bulan ini badge */}
-                <div className="mt-3">
-                  <span className="inline-flex items-center gap-1 rounded-full bg-white/15 backdrop-blur-xs px-3 py-1 text-xs font-semibold text-emerald-100">
-                    +{(summary.totalPoinDidapat ?? 0).toLocaleString('id-ID')} poin bulan ini
+                {/* Right: Total Setoran — distinct lighter panel */}
+                <div className="relative shrink-0 sm:w-[168px] rounded-xl bg-white/10 border border-white/10 px-4 py-4 flex flex-col justify-center overflow-hidden">
+                  <span className="pointer-events-none absolute -right-3 -top-3 flex h-12 w-12 items-center justify-center rounded-full bg-white/10">
+                    <Recycle size={16} className="text-emerald-200/70 -translate-x-1 -translate-y-1" />
                   </span>
+                  <p className="text-[11px] font-medium text-emerald-200/80 mb-1.5">
+                    Total Setoran
+                  </p>
+                  <p className="font-display text-2xl font-bold tabular-nums text-white">
+                    {summary.totalSampahDisetorKg ?? 0}{' '}
+                    <span className="text-sm font-normal text-emerald-200/90">kg</span>
+                  </p>
+                  <p className="text-[11px] text-emerald-300/80 mt-1">
+                    dari {summary.totalTransaksiSetor ?? 0} transaksi
+                  </p>
                 </div>
-
-                {/* Link Lihat Riwayat */}
-                <button
-                  onClick={() => goToProtected('/riwayat')}
-                  className="mt-4 flex items-center gap-1 text-xs font-semibold text-brand-200 hover:text-white transition-colors"
-                >
-                  Lihat Riwayat <ChevronRight size={13} />
-                </button>
               </div>
-
-              {/* Right: Total Setoran — distinct lighter panel */}
-              <div className="relative shrink-0 sm:w-[168px] rounded-xl bg-white/10 border border-white/10 px-4 py-4 flex flex-col justify-center overflow-hidden">
-                <span className="pointer-events-none absolute -right-3 -top-3 flex h-12 w-12 items-center justify-center rounded-full bg-white/10">
-                  <Recycle size={16} className="text-emerald-200/70 -translate-x-1 -translate-y-1" />
-                </span>
-                <p className="text-[11px] font-medium text-emerald-200/80 mb-1.5">
-                  Total Setoran
-                </p>
-                <p className="font-display text-2xl font-bold tabular-nums text-white">
-                  {summary.totalSampahDisetorKg ?? 0}{' '}
-                  <span className="text-sm font-normal text-emerald-200/90">kg</span>
-                </p>
-                <p className="text-[11px] text-emerald-300/80 mt-1">
-                  dari {summary.totalTransaksiSetor ?? 0} transaksi
-                </p>
-              </div>
-            </div>
+            )}
           </div>
 
           {/* Card Dampak Kamu — white */}
           <div className="flex flex-col justify-between rounded-2xl bg-white p-5 sm:p-6 shadow-card border border-gray-100">
-            <div>
-              <div className="flex items-center gap-2 mb-3">
-                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
-                  <Leaf size={15} strokeWidth={2.5} />
-                </span>
-                <p className="text-sm font-bold text-ink">Dampak Kamu</p>
+            {loading ? (
+              <div className="animate-pulse space-y-4">
+                <div className="h-5 w-32 bg-gray-200 rounded" />
+                <div className="h-9 w-28 bg-gray-200 rounded" />
+                <div className="h-3 w-full bg-gray-200 rounded-full" />
               </div>
+            ) : (
+              <>
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="flex h-7 w-7 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
+                      <Leaf size={15} strokeWidth={2.5} />
+                    </span>
+                    <p className="text-sm font-bold text-ink">Dampak Kamu</p>
+                  </div>
 
-              <div>
-                <p className="font-display text-3xl font-bold text-ink tabular-nums">
-                  {summary.totalSampahDisetorKg ?? 0} <span className="text-base font-normal text-gray-400">kg</span>
-                </p>
-                <p className="text-xs text-gray-500 mt-1">sampah berhasil dikumpulkan bulan ini</p>
-              </div>
-            </div>
+                  <div>
+                    <p className="font-display text-3xl font-bold text-ink tabular-nums">
+                      {summary.totalSampahDisetorKg ?? 0} <span className="text-base font-normal text-gray-400">kg</span>
+                    </p>
+                    <p className="text-xs text-gray-500 mt-1">sampah berhasil dikumpulkan bulan ini</p>
+                  </div>
+                </div>
 
-            {/* Progress bar — target is a visual placeholder (no target field from API) */}
-            <div className="mt-5">
-              <div className="h-2 w-full rounded-full bg-gray-100 overflow-hidden">
-                <div
-                  className="h-full rounded-full bg-brand-500 transition-all"
-                  style={{ width: `${targetPercent}%` }}
-                />
-              </div>
-              <div className="flex items-center justify-between mt-2.5 text-[11px] text-gray-400">
-                <span>Target bulan ini</span>
-                <span className="font-semibold text-ink">
-                  {summary.totalSampahDisetorKg ?? 0} / {TARGET_KG} kg
-                  <span className="ml-1.5 font-medium text-gray-400">{targetPercent}%</span>
-                </span>
-              </div>
-            </div>
+                {/* Progress bar */}
+                <div className="mt-5">
+                  <div className="h-2 w-full rounded-full bg-gray-100 overflow-hidden">
+                    <div
+                      className="h-full rounded-full bg-brand-500 transition-all"
+                      style={{ width: `${targetPercent}%` }}
+                    />
+                  </div>
+                  <div className="flex items-center justify-between mt-2.5 text-[11px] text-gray-400">
+                    <span>Target bulan ini</span>
+                    <span className="font-semibold text-ink">
+                      {summary.totalSampahDisetorKg ?? 0} / {TARGET_KG} kg
+                      <span className="ml-1.5 font-medium text-gray-400">{targetPercent}%</span>
+                    </span>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}
@@ -268,7 +313,7 @@ export default function Beranda() {
           </div>
           <button
             onClick={() => goToProtected('/setor')}
-            className="flex items-center gap-0.5 text-xs font-semibold text-emerald-700 hover:text-emerald-800 transition-colors"
+            className="flex items-center gap-0.5 text-xs font-semibold text-emerald-700 hover:text-emerald-800 transition-colors cursor-pointer"
           >
             Lihat Semua <ChevronRight size={13} />
           </button>
@@ -278,7 +323,7 @@ export default function Beranda() {
           {/* Setor Sampah */}
           <button
             onClick={() => goToProtected('/setor')}
-            className="group flex items-center justify-between rounded-2xl bg-white p-4 shadow-card border border-gray-100 hover:border-emerald-200 hover:shadow-md transition-all text-left"
+            className="group flex items-center justify-between rounded-2xl bg-white p-4 shadow-card border border-gray-100 hover:border-emerald-200 hover:shadow-md transition-all text-left cursor-pointer"
           >
             <div className="flex items-center gap-3 min-w-0">
               <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-emerald-600 group-hover:bg-emerald-100 transition-colors">
@@ -295,7 +340,7 @@ export default function Beranda() {
           {/* Tukar Poin */}
           <button
             onClick={() => goToProtected('/hadiah')}
-            className="group flex items-center justify-between rounded-2xl bg-white p-4 shadow-card border border-gray-100 hover:border-amber-200 hover:shadow-md transition-all text-left"
+            className="group flex items-center justify-between rounded-2xl bg-white p-4 shadow-card border border-gray-100 hover:border-amber-200 hover:shadow-md transition-all text-left cursor-pointer"
           >
             <div className="flex items-center gap-3 min-w-0">
               <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-amber-50 text-amber-600 group-hover:bg-amber-100 transition-colors">
@@ -312,7 +357,7 @@ export default function Beranda() {
           {/* Riwayat */}
           <button
             onClick={() => goToProtected('/riwayat')}
-            className="group flex items-center justify-between rounded-2xl bg-white p-4 shadow-card border border-gray-100 hover:border-sky-200 hover:shadow-md transition-all text-left"
+            className="group flex items-center justify-between rounded-2xl bg-white p-4 shadow-card border border-gray-100 hover:border-sky-200 hover:shadow-md transition-all text-left cursor-pointer"
           >
             <div className="flex items-center gap-3 min-w-0">
               <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-sky-50 text-sky-600 group-hover:bg-sky-100 transition-colors">
@@ -344,60 +389,81 @@ export default function Beranda() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-5">
-          {kategori.slice(0, 4).map((k) => {
-            const fotoUrl = resolveFotoUrl(k.foto)
-            return (
-              <button
-                key={k.id}
-                onClick={() => goToProtected('/kategori-sampah')}
-                className="group flex flex-col overflow-hidden rounded-2xl bg-white text-left shadow-card border border-gray-100 hover:border-emerald-200 hover:shadow-md transition-all cursor-pointer"
+        {/* Loading Skeleton */}
+        {loading && (
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-5">
+            {[1, 2, 3, 4].map((i) => (
+              <div
+                key={i}
+                className="animate-pulse flex flex-col rounded-2xl bg-white p-4 shadow-card border border-gray-100"
               >
-                {/* Foto */}
-                <div className="relative aspect-[16/10] w-full overflow-hidden bg-gray-100">
-                  {fotoUrl ? (
-                    <>
-                      <img
-                        src={fotoUrl}
-                        alt={k.namaKategori}
-                        className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        onError={(e) => {
-                          e.currentTarget.style.display = 'none'
-                          if (e.currentTarget.nextSibling) {
-                            e.currentTarget.nextSibling.style.display = 'flex'
-                          }
-                        }}
-                      />
-                      <div className="absolute inset-0" style={{ display: 'none' }}>
-                        <WasteIcon jenis={k.jenis} />
-                      </div>
-                    </>
-                  ) : (
-                    <WasteIcon jenis={k.jenis} />
-                  )}
-                </div>
+                <div className="aspect-[16/10] w-full rounded-xl bg-gray-200 mb-3" />
+                <div className="h-4 w-3/4 bg-gray-200 rounded mb-2" />
+                <div className="h-3 w-1/2 bg-gray-200 rounded mb-3" />
+                <div className="h-6 w-24 bg-gray-200 rounded-full" />
+              </div>
+            ))}
+          </div>
+        )}
 
-                {/* Details */}
-                <div className="flex flex-1 flex-col gap-3 p-4">
-                  <div>
-                    <p className="text-xs sm:text-sm font-bold text-ink group-hover:text-emerald-700 transition-colors line-clamp-1">
-                      {k.namaKategori}
-                    </p>
-                    <p className="text-[11px] text-gray-400 mt-1 font-medium">
-                      Rp {(k.hargaPerKg).toLocaleString('id-ID')}/kg
-                    </p>
+        {/* Categories Grid */}
+        {!loading && (
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-5">
+            {kategori.slice(0, 4).map((k, idx) => {
+              const id = k.id ?? k.kategoriSampahId ?? idx
+              const fotoUrl = resolveFotoUrl(k.foto)
+              return (
+                <button
+                  key={id}
+                  onClick={() => goToProtected('/kategori-sampah')}
+                  className="group flex flex-col overflow-hidden rounded-2xl bg-white text-left shadow-card border border-gray-100 hover:border-emerald-200 hover:shadow-md transition-all cursor-pointer"
+                >
+                  {/* Foto */}
+                  <div className="relative aspect-[16/10] w-full overflow-hidden bg-gray-100">
+                    {fotoUrl ? (
+                      <>
+                        <img
+                          src={fotoUrl}
+                          alt={k.namaKategori}
+                          className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none'
+                            if (e.currentTarget.nextSibling) {
+                              e.currentTarget.nextSibling.style.display = 'flex'
+                            }
+                          }}
+                        />
+                        <div className="absolute inset-0" style={{ display: 'none' }}>
+                          <WasteIcon jenis={k.jenis} />
+                        </div>
+                      </>
+                    ) : (
+                      <WasteIcon jenis={k.jenis} />
+                    )}
                   </div>
-                  <div>
-                    <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 border border-emerald-100 px-2.5 py-1 text-[11px] font-bold text-emerald-700">
-                      <Star size={11} className="fill-amber-400 text-amber-500" />
-                      +{k.poinPerKg} Poin/kg
-                    </span>
+
+                  {/* Details */}
+                  <div className="flex flex-1 flex-col gap-3 p-4">
+                    <div>
+                      <p className="text-xs sm:text-sm font-bold text-ink group-hover:text-emerald-700 transition-colors line-clamp-1">
+                        {k.namaKategori}
+                      </p>
+                      <p className="text-[11px] text-gray-400 mt-1 font-medium">
+                        Rp {(k.hargaPerKg).toLocaleString('id-ID')}/kg
+                      </p>
+                    </div>
+                    <div>
+                      <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 border border-emerald-100 px-2.5 py-1 text-[11px] font-bold text-emerald-700">
+                        <Star size={11} className="fill-amber-400 text-amber-500" />
+                        +{k.poinPerKg} Poin/kg
+                      </span>
+                    </div>
                   </div>
-                </div>
-              </button>
-            )
-          })}
-        </div>
+                </button>
+              )
+            })}
+          </div>
+        )}
       </section>
 
       {/* ── Section: Tahukah Kamu? ── */}
@@ -423,7 +489,7 @@ export default function Beranda() {
           </p>
           <button
             onClick={() => goToProtected('/kategori-sampah')}
-            className="mt-3 self-start text-xs font-semibold text-emerald-700 hover:text-emerald-800 transition-colors flex items-center gap-0.5"
+            className="mt-3 self-start text-xs font-semibold text-emerald-700 hover:text-emerald-800 transition-colors flex items-center gap-0.5 cursor-pointer"
           >
             Pelajari lebih lanjut <ChevronRight size={13} />
           </button>
@@ -446,7 +512,13 @@ export default function Beranda() {
                 </Link>
               </div>
               <div className="divide-y divide-gray-100">
-                {summary.transaksiTerakhirSetor && (
+                {loading && (
+                  <div className="p-4 space-y-3">
+                    <div className="h-4 w-32 bg-gray-100 rounded animate-pulse" />
+                    <div className="h-4 w-44 bg-gray-100 rounded animate-pulse" />
+                  </div>
+                )}
+                {!loading && summary.transaksiTerakhirSetor && (
                   <TransaksiItem
                     type="setor"
                     title="Setor Sampah"
@@ -455,7 +527,7 @@ export default function Beranda() {
                     poin={summary.transaksiTerakhirSetor.poin}
                   />
                 )}
-                {summary.transaksiTerakhirTukar && (
+                {!loading && summary.transaksiTerakhirTukar && (
                   <TransaksiItem
                     type="tukar"
                     title="Tukar Poin"
@@ -464,7 +536,7 @@ export default function Beranda() {
                     poin={summary.transaksiTerakhirTukar.poin}
                   />
                 )}
-                {!summary.transaksiTerakhirSetor && !summary.transaksiTerakhirTukar && (
+                {!loading && !summary.transaksiTerakhirSetor && !summary.transaksiTerakhirTukar && (
                   <div className="px-4 py-6 text-center text-xs text-gray-400">
                     Belum ada transaksi
                   </div>
@@ -492,7 +564,7 @@ export default function Beranda() {
 
           <button
             onClick={() => goToProtected('/setor')}
-            className="relative z-10 mt-4 self-start rounded-full bg-emerald-700 px-5 py-2.5 text-xs font-bold text-white hover:bg-emerald-800 transition-colors shadow-sm flex items-center gap-1.5"
+            className="relative z-10 mt-4 self-start rounded-full bg-emerald-700 px-5 py-2.5 text-xs font-bold text-white hover:bg-emerald-800 transition-colors shadow-sm flex items-center gap-1.5 cursor-pointer"
           >
             Setor Sekarang <ChevronRight size={14} />
           </button>

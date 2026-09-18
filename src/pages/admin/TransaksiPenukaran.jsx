@@ -524,13 +524,13 @@ export default function TransaksiPenukaran() {
       {/* ── Loading Skeleton (Slim Horizontal Cards) ── */}
       {loading && (
         <div className="space-y-6">
-          {[1, 2].map((section) => (
-            <div key={section} className="space-y-3">
+          {[1, 2].map((_, sIdx) => (
+            <div key={`skel-sec-${sIdx}`} className="space-y-3">
               <div className="h-5 w-40 bg-gray-200 rounded-lg animate-pulse" />
               <div className="space-y-2.5">
-                {[1, 2, 3].map((card) => (
+                {[1, 2, 3].map((_, cIdx) => (
                   <div
-                    key={card}
+                    key={`skel-card-${sIdx}-${cIdx}`}
                     className="rounded-2xl border border-gray-100 bg-white p-4 flex items-center justify-between gap-4 animate-pulse shadow-xs"
                   >
                     <div className="flex items-center gap-3.5 flex-1">

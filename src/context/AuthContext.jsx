@@ -1,10 +1,10 @@
 import { createContext, useContext, useEffect, useState, useCallback, useRef } from 'react'
-import { registerAppMaker } from '../services/authService'
+import { registerAppMaker, seedDatabase } from '../services/authService'
 
 const AuthContext = createContext(null)
 const STORAGE_KEY = 'banksampah_session'
 
-// Session: { appKey, token, role: 'nasabah' | 'admin' | null, user }
+// Session: { appKey, token, role: 'nasabah' | 'admin' | null, user, seedDone: boolean }
 export function AuthProvider({ children }) {
   const [session, setSession] = useState(() => {
     try {
@@ -17,15 +17,17 @@ export function AuthProvider({ children }) {
           token: null,
           role: null,
           user: null,
+          seedDone: false,
         }
       )
     } catch (e) {
       console.error('[AuthContext] Error parsing localStorage session saat init:', e)
-      return { appKey: null, token: null, role: null, user: null }
+      return { appKey: null, token: null, role: null, user: null, seedDone: false }
     }
   })
 
   const [isInitializing, setIsInitializing] = useState(!session.appKey)
+  const [initStatus, setInitStatus] = useState('Menyiapkan koneksi aplikasi...')
   const [initError, setInitError] = useState(null)
   const isFetchingRef = useRef(false)
 
@@ -35,7 +37,7 @@ export function AuthProvider({ children }) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(session))
   }, [session])
 
-  // Auto-register App Maker on initial load if appKey is empty
+  // Auto-register App Maker on initial load if appKey is empty & auto-seed
   const autoRegisterAppMaker = useCallback(async () => {
     if (session.appKey || isFetchingRef.current) {
       setIsInitializing(false)
@@ -44,6 +46,7 @@ export function AuthProvider({ children }) {
 
     isFetchingRef.current = true
     setIsInitializing(true)
+    setInitStatus('Menyiapkan koneksi aplikasi...')
     setInitError(null)
 
     try {
@@ -71,7 +74,23 @@ export function AuthProvider({ children }) {
       }
 
       console.log('[AuthContext] App Key baru didapatkan:', receivedKey)
-      setSession((prev) => ({ ...prev, appKey: receivedKey }))
+
+      // ── Auto-seed initial data once for new App Key ──
+      setInitStatus('Menyiapkan data awal...')
+      try {
+        console.log('[AuthContext] Menjalankan auto-seed untuk App Key baru:', receivedKey)
+        const seedRes = await seedDatabase(receivedKey)
+        console.log('[AuthContext] Auto-seed berhasil:', seedRes.data)
+      } catch (seedErr) {
+        // Non-blocking: log error and proceed normally
+        console.warn('[AuthContext] Auto-seed gagal (non-fatal, melanjutkan aplikasi):', seedErr.response || seedErr)
+      }
+
+      setSession((prev) => ({
+        ...prev,
+        appKey: receivedKey,
+        seedDone: true,
+      }))
       setIsInitializing(false)
     } catch (err) {
       console.error('[AuthContext] Gagal inisialisasi App Maker:', err.response || err)
@@ -111,7 +130,7 @@ export function AuthProvider({ children }) {
 
   const logout = () => {
     console.log('[AuthContext] Menjalankan logout()')
-    setSession((prev) => ({ appKey: prev.appKey, token: null, role: null, user: null }))
+    setSession((prev) => ({ appKey: prev.appKey, token: null, role: null, user: null, seedDone: prev.seedDone }))
   }
 
   const isGuest = !session.token
@@ -125,6 +144,7 @@ export function AuthProvider({ children }) {
         setAppKey,
         isGuest,
         isInitializing,
+        initStatus,
         initError,
         retryInit: autoRegisterAppMaker,
       }}

@@ -288,8 +288,8 @@ export default function KategoriSampah() {
       {/* Categories Grid with Real Photos */}
       {!loading && filtered.length > 0 && (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-          {filtered.map((k) => {
-            const id = k.id || k.kategoriSampahId || Math.random()
+          {filtered.map((k, idx) => {
+            const id = k.id ?? k.kategoriSampahId ?? k.id_kategori_sampah ?? idx
             const nama = k.namaKategori || k.nama || 'Kategori'
             const harga = Number(k.hargaPerKg ?? k.harga ?? 0)
             const poin = Number(k.poinPerKg ?? k.poin ?? 0)
@@ -312,7 +312,9 @@ export default function KategoriSampah() {
                           className="absolute inset-0 w-full h-full object-cover"
                           onError={(e) => {
                             e.currentTarget.style.display = 'none'
-                            e.currentTarget.nextSibling.style.display = 'flex'
+                            if (e.currentTarget.nextSibling) {
+                              e.currentTarget.nextSibling.style.display = 'flex'
+                            }
                           }}
                         />
                         <div className="absolute inset-0" style={{ display: 'none' }}>
@@ -345,10 +347,27 @@ export default function KategoriSampah() {
 
       {/* Empty State */}
       {!loading && filtered.length === 0 && !errorMsg && (
-        <div className="flex flex-col items-center justify-center rounded-3xl bg-white p-10 shadow-card border border-gray-100 text-center">
-          <Leaf size={32} className="text-gray-300 mb-3" />
-          <p className="font-bold text-ink text-sm">Tidak ada kategori yang cocok</p>
-          <p className="text-xs text-gray-400 mt-1">Coba kata kunci pencarian lainnya.</p>
+        <div className="flex flex-col items-center justify-center rounded-3xl bg-white p-12 shadow-card border border-gray-100 text-center">
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-50 text-brand-600 mb-3">
+            <Leaf size={26} />
+          </div>
+          <h3 className="font-display text-base font-bold text-ink">
+            Kategori Sampah Tidak Ditemukan
+          </h3>
+          <p className="text-xs text-gray-400 mt-1 max-w-xs leading-relaxed">
+            {searchTerm
+              ? `Tidak ada jenis sampah yang cocok dengan kata kunci "${searchTerm}".`
+              : 'Belum ada kategori sampah yang terdaftar di sistem.'}
+          </p>
+          {searchTerm && (
+            <button
+              type="button"
+              onClick={() => setSearchTerm('')}
+              className="mt-4 rounded-full border border-gray-200 bg-white px-4 py-1.5 text-xs font-semibold text-gray-600 hover:bg-gray-50 transition-colors cursor-pointer"
+            >
+              Hapus Pencarian
+            </button>
+          )}
         </div>
       )}
 

@@ -30,9 +30,9 @@ import Login from './pages/auth/Login'
 import BackgroundFoliage from './components/nasabah/BackgroundFoliage'
 
 export default function App() {
-  const { isInitializing, initError, retryInit } = useAuth()
+  const { isInitializing, initStatus, initError, retryInit } = useAuth()
 
-  // Display clean branded splash/loading screen while auto-registering App Key
+  // Display clean branded splash/loading screen while auto-registering App Key & seeding
   if (isInitializing) {
     return (
       <div className="relative min-h-screen flex flex-col items-center justify-center bg-sand px-4 overflow-hidden">
@@ -42,7 +42,7 @@ export default function App() {
             <Leaf size={32} strokeWidth={2.25} />
           </div>
           <h1 className="font-display text-xl font-bold text-ink">Bank Sampah Digital</h1>
-          <p className="mt-1 text-xs text-gray-500">Menyiapkan koneksi aplikasi...</p>
+          <p className="mt-1 text-xs text-gray-500">{initStatus || 'Menyiapkan koneksi aplikasi...'}</p>
           <div className="mt-6 flex items-center gap-2 text-xs font-semibold text-brand-700 bg-brand-50 px-3.5 py-1.5 rounded-full border border-brand-100">
             <div className="h-3.5 w-3.5 border-2 border-brand-600 border-t-transparent rounded-full animate-spin" />
             <span>Memulai sesi</span>
