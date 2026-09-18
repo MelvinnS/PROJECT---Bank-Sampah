@@ -1,11 +1,11 @@
 import { getWasteImage } from '../../utils/wasteImages'
 
 /**
- * WasteIcon component that renders a crisp, high-definition real Unsplash photograph
- * with proper aspect ratio, object-cover, and descriptive alt text for accessibility.
+ * WasteIcon component that renders matching category image (local assets or HD Unsplash)
+ * with proper aspect ratio, object-cover, and descriptive alt text.
  */
-export default function WasteIcon({ jenis = 'plastik', className = '' }) {
-  const { url, alt } = getWasteImage(jenis)
+export default function WasteIcon({ jenis = 'plastik', item = null, className = '' }) {
+  const { url, alt } = getWasteImage(item || jenis)
 
   return (
     <div className={`relative h-full w-full overflow-hidden bg-gray-100 ${className}`}>

@@ -1,6 +1,11 @@
+import sampahBotolImg from '../assets/images/sampahbotol.jpg'
+import sampahKalengImg from '../assets/images/sampahkaleng.jpg'
+import sampahKardusImg from '../assets/images/sampahkardus.jpg'
+
 /**
- * High-definition Unsplash images for waste categories (matching real API waste types).
- * Resolution set to HD (?w=800&q=80).
+ * Waste category default images mapping.
+ * Uses local image files for kaca (sampahbotol.jpg), kertas (sampahkardus.jpg), logam (sampahkaleng.jpg),
+ * and retains plastic image for plastik.
  */
 export const WASTE_IMAGES = {
   plastik: {
@@ -8,29 +13,48 @@ export const WASTE_IMAGES = {
     alt: 'Tumpukan botol plastik bekas daur ulang',
   },
   kertas: {
-    url: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=800&q=80&auto=format&fit=crop',
+    url: sampahKardusImg,
     alt: 'Tumpukan kardus dan kertas karton bekas',
   },
   logam: {
-    url: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80&auto=format&fit=crop',
+    url: sampahKalengImg,
     alt: 'Kaleng aluminium dan sampah logam daur ulang',
   },
   kaca: {
-    url: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=800&q=80&auto=format&fit=crop',
+    url: sampahBotolImg,
     alt: 'Botol kaca bening dan toples daur ulang',
   },
   default: {
-    url: 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=800&q=80&auto=format&fit=crop',
+    url: sampahBotolImg,
     alt: 'Sampah daur ulang terpilah',
   },
 }
 
 /**
- * Helper to get HD image info by category jenis/type
- * @param {string} jenis - 'plastik' | 'kertas' | 'logam' | 'kaca'
+ * Helper to get image info by category object, name, or jenis
+ * @param {string|object} itemOrJenis - category item object or jenis string
  * @returns {{ url: string, alt: string }}
  */
-export function getWasteImage(jenis = '') {
-  const key = String(jenis).toLowerCase().trim()
-  return WASTE_IMAGES[key] || WASTE_IMAGES.default
+export function getWasteImage(itemOrJenis = '') {
+  let text = ''
+  if (typeof itemOrJenis === 'object' && itemOrJenis !== null) {
+    text = `${itemOrJenis.namaKategori || itemOrJenis.nama || ''} ${itemOrJenis.jenis || ''}`.toLowerCase()
+  } else {
+    text = String(itemOrJenis || '').toLowerCase().trim()
+  }
+
+  // KECUALI section botol plastik
+  if (text.includes('botol plastik') || text.includes('plastik')) {
+    return WASTE_IMAGES.plastik
+  }
+  if (text.includes('kardus') || text.includes('kertas') || text.includes('karton')) {
+    return WASTE_IMAGES.kertas
+  }
+  if (text.includes('kaleng') || text.includes('logam') || text.includes('besi') || text.includes('aluminium')) {
+    return WASTE_IMAGES.logam
+  }
+  if (text.includes('kaca') || text.includes('botol')) {
+    return WASTE_IMAGES.kaca
+  }
+  return WASTE_IMAGES[text] || WASTE_IMAGES.default
 }

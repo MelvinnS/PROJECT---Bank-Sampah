@@ -21,6 +21,29 @@ import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { getDashboardSummary, getHadiah, tukarPoin } from '../../services/nasabahService'
 import { resolveFotoUrl } from '../../services/api'
+import hadiahBerasImg from '../../assets/images/hadiahberas.jpg'
+import hadiahMinyakImg from '../../assets/images/hadiahminyak.jpg'
+import hadiahPulsaImg from '../../assets/images/hadiahpulsa.jpg'
+
+/**
+ * Helper to determine default photo for gifts based on name & description
+ */
+function getDefaultGiftPhoto(gift) {
+  const name = String(gift?.namaHadiah || gift?.nama || gift?.nama_hadiah || '').toLowerCase()
+  const desc = String(gift?.deskripsi || '').toLowerCase()
+  const combined = `${name} ${desc}`
+
+  if (combined.includes('beras') || combined.includes('sembako') || combined.includes('pangan')) {
+    return hadiahBerasImg
+  }
+  if (combined.includes('minyak') || combined.includes('goreng') || combined.includes('kelapa')) {
+    return hadiahMinyakImg
+  }
+  if (combined.includes('pulsa') || combined.includes('voucher') || combined.includes('token') || combined.includes('kuota') || combined.includes('data') || combined.includes('pln')) {
+    return hadiahPulsaImg
+  }
+  return hadiahBerasImg
+}
 
 // ── Result Modal after Sequential Redemption (Defined OUTSIDE parent) ──
 function RedeemResultModal({ result, onClose, onGoToRiwayat }) {
@@ -621,21 +644,23 @@ export default function Hadiah() {
                             onError={(e) => {
                               e.currentTarget.style.display = 'none'
                               if (e.currentTarget.nextSibling) {
-                                e.currentTarget.nextSibling.style.display = 'flex'
+                                e.currentTarget.nextSibling.style.display = 'block'
                               }
                             }}
                           />
-                          <div
-                            className="absolute inset-0 flex items-center justify-center text-brand-600 group-hover:scale-105 transition-transform duration-300"
+                          <img
+                            src={getDefaultGiftPhoto(gift)}
+                            alt={nama}
+                            className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
                             style={{ display: 'none' }}
-                          >
-                            <Gift size={32} strokeWidth={1.8} />
-                          </div>
+                          />
                         </>
                       ) : (
-                        <div className="flex flex-col items-center justify-center text-brand-600 group-hover:scale-105 transition-transform duration-300">
-                          <Gift size={32} strokeWidth={1.8} />
-                        </div>
+                        <img
+                          src={getDefaultGiftPhoto(gift)}
+                          alt={nama}
+                          className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
                       )}
 
                       {/* Badge Stok */}
@@ -729,13 +754,31 @@ export default function Hadiah() {
             <div className="flex items-center gap-3 min-w-0">
               <div className="h-11 w-11 sm:h-12 sm:w-12 rounded-2xl bg-brand-50 border border-brand-200/80 flex items-center justify-center overflow-hidden shrink-0">
                 {resolveFotoUrl(cart.gift.foto || cart.gift.gambar || cart.gift.imageUrl) ? (
+                  <>
+                    <img
+                      src={resolveFotoUrl(cart.gift.foto || cart.gift.gambar || cart.gift.imageUrl)}
+                      alt={cart.gift.namaHadiah ?? cart.gift.nama}
+                      className="h-full w-full object-cover"
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none'
+                        if (e.currentTarget.nextSibling) {
+                          e.currentTarget.nextSibling.style.display = 'block'
+                        }
+                      }}
+                    />
+                    <img
+                      src={getDefaultGiftPhoto(cart.gift)}
+                      alt={cart.gift.namaHadiah ?? cart.gift.nama}
+                      className="h-full w-full object-cover"
+                      style={{ display: 'none' }}
+                    />
+                  </>
+                ) : (
                   <img
-                    src={resolveFotoUrl(cart.gift.foto || cart.gift.gambar || cart.gift.imageUrl)}
+                    src={getDefaultGiftPhoto(cart.gift)}
                     alt={cart.gift.namaHadiah ?? cart.gift.nama}
                     className="h-full w-full object-cover"
                   />
-                ) : (
-                  <Gift size={20} className="text-brand-600" />
                 )}
               </div>
               <div className="min-w-0 flex-1">

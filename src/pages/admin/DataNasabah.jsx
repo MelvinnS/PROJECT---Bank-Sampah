@@ -383,7 +383,7 @@ export default function DataNasabah() {
             className="inline-flex items-center gap-2 rounded-2xl bg-brand-600 px-4 py-2.5 text-xs sm:text-sm font-bold text-white shadow-sm hover:bg-brand-700 active:scale-95 transition-all cursor-pointer"
           >
             <Plus size={16} strokeWidth={2.5} />
-            <span>+ Tambah Nasabah</span>
+            <span> Tambah Nasabah</span>
           </button>
         </div>
       </div>

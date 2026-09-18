@@ -108,12 +108,12 @@ function CategoryBottomSheet({ item, onClose, onSetor }) {
                   className="absolute inset-0 flex items-center justify-center bg-gray-50"
                   style={{ display: 'none' }}
                 >
-                  <WasteIcon jenis={jenis} />
+                  <WasteIcon item={item} jenis={jenis} />
                 </div>
               </>
             ) : (
               <div className="w-full h-full flex items-center justify-center bg-gray-50">
-                <WasteIcon jenis={jenis} />
+                <WasteIcon item={item} jenis={jenis} />
               </div>
             )}
           </div>
@@ -318,11 +318,11 @@ export default function KategoriSampah() {
                           }}
                         />
                         <div className="absolute inset-0" style={{ display: 'none' }}>
-                          <WasteIcon jenis={k.jenis} />
+                          <WasteIcon item={k} jenis={k.jenis} />
                         </div>
                       </>
                     ) : (
-                      <WasteIcon jenis={k.jenis} />
+                      <WasteIcon item={k} jenis={k.jenis} />
                     )}
                   </div>
                   <h3 className="font-bold text-xs sm:text-sm text-ink group-hover:text-brand-700 transition-colors line-clamp-1 mb-1">
