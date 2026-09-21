@@ -43,12 +43,12 @@ export default function Sidebar({ isOpen, onClose }) {
         {/* Logo & Mobile Close Button */}
         <div className="flex items-center justify-between px-5 py-5 border-b border-gray-100">
           <div className="flex items-center gap-2.5">
-            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-600 text-white shrink-0">
-              <Leaf size={18} strokeWidth={2.25} />
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#153d23] text-white shrink-0 shadow-sm shadow-[#153d23]/20">
+              <Leaf size={18} strokeWidth={2.4} />
             </span>
             <div className="leading-tight">
-              <p className="text-[14px] font-bold text-ink">Bank Sampah</p>
-              <p className="-mt-0.5 text-[14px] font-bold text-brand-600">Digital</p>
+              <p className="text-[14px] font-extrabold text-[#0f2e1b]">Bank Sampah</p>
+              <p className="-mt-0.5 text-[14px] font-bold text-[#153d23]">Digital</p>
             </div>
           </div>
 
@@ -73,16 +73,16 @@ export default function Sidebar({ isOpen, onClose }) {
                 key={item.to}
                 to={item.to}
                 onClick={(e) => handleClick(e, item)}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-150 ${
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-2xl text-sm font-semibold transition-all duration-150 ${
                   active
-                    ? 'bg-brand-50 text-brand-700'
-                    : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700'
+                    ? 'bg-[#153d23] text-white shadow-md shadow-[#153d23]/20'
+                    : 'text-gray-600 hover:bg-[#153d23]/5 hover:text-[#153d23]'
                 }`}
               >
                 <Icon
                   size={18}
                   strokeWidth={active ? 2.4 : 1.9}
-                  className={active ? 'text-brand-600' : 'text-gray-400'}
+                  className={active ? 'text-white' : 'text-gray-400'}
                 />
                 {item.label}
               </NavLink>
@@ -92,11 +92,11 @@ export default function Sidebar({ isOpen, onClose }) {
 
         {/* Eco Card at Bottom */}
         <div className="px-3 pb-5">
-          <div className="rounded-2xl bg-brand-50 border border-brand-100 p-4">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-600/10 text-brand-600 mb-2">
-              <Leaf size={16} strokeWidth={2} />
+          <div className="rounded-2xl bg-[#153d23]/5 border border-[#153d23]/10 p-4">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#153d23] text-white mb-2 shadow-xs">
+              <Leaf size={16} strokeWidth={2.2} />
             </div>
-            <p className="text-xs font-semibold text-brand-800 leading-snug">
+            <p className="text-xs font-semibold text-[#0f2e1b] leading-snug">
               Jaga bumi dengan langkah kecil mulai dari kita 🌿
             </p>
           </div>

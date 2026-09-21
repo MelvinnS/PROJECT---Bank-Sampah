@@ -50,13 +50,13 @@ export default function MainLayout({ children }) {
             {!isGuest && (
               <button
                 onClick={() => navigate('/akun')}
-                className="flex items-center gap-2 rounded-full bg-gray-50 border border-gray-200 pl-1 pr-2.5 sm:pr-3 py-1 text-sm font-semibold text-ink hover:bg-brand-50 hover:border-brand-200 transition-colors"
+                className="flex items-center gap-2 rounded-full bg-gray-50 border border-gray-200 pl-1 pr-2.5 sm:pr-3 py-1 text-sm font-semibold text-[#0f2e1b] hover:bg-[#153d23]/5 hover:border-[#153d23]/30 transition-colors cursor-pointer"
                 aria-label="Profil"
               >
-                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-100 text-xs font-bold text-brand-700 shrink-0">
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#153d23] text-xs font-bold text-white shrink-0 shadow-xs">
                   {initial}
                 </span>
-                <span className="hidden sm:inline text-xs font-semibold text-ink truncate max-w-[110px]">
+                <span className="hidden sm:inline text-xs font-bold text-[#0f2e1b] truncate max-w-[110px]">
                   {nama}
                 </span>
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="text-gray-400">
@@ -68,7 +68,7 @@ export default function MainLayout({ children }) {
             {isGuest && (
               <button
                 onClick={() => navigate('/login')}
-                className="rounded-full bg-brand-600 px-4 py-1.5 text-xs font-bold text-white shadow-sm hover:bg-brand-700 transition-colors"
+                className="rounded-full bg-[#153d23] hover:bg-[#0f2e1b] px-4 py-1.5 text-xs font-bold text-white shadow-sm transition-colors cursor-pointer"
               >
                 Masuk
               </button>

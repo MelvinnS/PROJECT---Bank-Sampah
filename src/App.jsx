@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import { Leaf, RefreshCw, AlertCircle } from 'lucide-react'
 import { useAuth } from './context/AuthContext'
 import MainLayout from './components/layout/MainLayout'
@@ -28,6 +28,21 @@ import ProfilUnit from './pages/admin/ProfilUnit'
 // Auth & Shared
 import Login from './pages/auth/Login'
 import BackgroundFoliage from './components/nasabah/BackgroundFoliage'
+import LandingPage from './pages/LandingPage'
+
+/**
+ * On first visit (session) as a guest, redirect from / to /landing.
+ * Once the user clicks "Masuk ke Bank Sampah" on the landing page,
+ * it navigates to / and sets sessionStorage so this redirect no longer fires.
+ */
+function RootWithLandingRedirect({ children }) {
+  const { isGuest } = useAuth()
+  const seen = sessionStorage.getItem('landingSeen')
+  if (isGuest && !seen) {
+    return <Navigate to="/landing" replace />
+  }
+  return children
+}
 
 export default function App() {
   const { isInitializing, initStatus, initError, retryInit } = useAuth()
@@ -80,14 +95,19 @@ export default function App() {
       {/* Auth Route */}
       <Route path="/login" element={<Login />} />
 
+      {/* Landing Page — accessible to all, no guard needed */}
+      <Route path="/landing" element={<LandingPage />} />
+
       {/* Nasabah Public Routes (Accessible by Nasabah & Guest; Admin redirected to /admin) */}
       <Route
         path="/"
         element={
           <RoleGuard allowRole="NASABAH" allowGuest={true}>
-            <MainLayout>
-              <Beranda />
-            </MainLayout>
+            <RootWithLandingRedirect>
+              <MainLayout>
+                <Beranda />
+              </MainLayout>
+            </RootWithLandingRedirect>
           </RoleGuard>
         }
       />

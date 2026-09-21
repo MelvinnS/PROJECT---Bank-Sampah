@@ -115,7 +115,7 @@ export default function Profil() {
   }
 
   return (
-    <div className="flex flex-col gap-6 pb-2">
+    <div className="flex flex-col gap-6 pb-2 max-w-6xl mx-auto">
       {/* Error Banner */}
       {errorMsg && (
         <div className="flex items-center justify-between gap-3 rounded-2xl bg-red-50 border border-red-200 p-4 text-xs text-red-700 shadow-xs">
@@ -152,15 +152,15 @@ export default function Profil() {
             {/* Left Column (8 cols on desktop) */}
             <div className="lg:col-span-8 flex flex-col gap-5">
               {/* Identity Card */}
-              <div className="relative overflow-hidden rounded-3xl bg-white p-6 sm:p-7 shadow-card border border-gray-100">
+              <div className="relative overflow-hidden rounded-3xl bg-white p-6 sm:p-7 shadow-card border border-[#153d23]/10">
                 {/* Decorative arc */}
-                <div className="pointer-events-none absolute -bottom-16 -right-16 h-56 w-56 rounded-full border-[24px] border-brand-50/60" />
+                <div className="pointer-events-none absolute -bottom-16 -right-16 h-56 w-56 rounded-full border-[24px] border-[#153d23]/5" />
 
                 <div className="relative flex flex-col sm:flex-row sm:items-center justify-between gap-6">
                   <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-5 text-center sm:text-left">
                     {/* Avatar */}
                     <div className="relative h-20 w-20 shrink-0">
-                      <div className="h-20 w-20 rounded-full bg-gradient-to-br from-brand-100 to-brand-200 border-4 border-white shadow-md flex items-center justify-center overflow-hidden">
+                      <div className="h-20 w-20 rounded-full bg-gradient-to-br from-[#153d23]/10 to-[#153d23]/20 border-4 border-white shadow-md flex items-center justify-center overflow-hidden">
                         {fotoUrl ? (
                           <>
                             <img
@@ -174,20 +174,20 @@ export default function Profil() {
                                 }
                               }}
                             />
-                            <div className="h-full w-full items-center justify-center" style={{ display: 'none' }}>
-                              <span className="font-display text-2xl font-extrabold text-brand-800 select-none">
+                            <div className="h-full w-full flex items-center justify-center" style={{ display: 'none' }}>
+                              <span className="font-display text-2xl font-extrabold text-[#153d23] select-none">
                                 {avatarInitial}
                               </span>
                             </div>
                           </>
                         ) : (
-                          <span className="font-display text-2xl font-extrabold text-brand-800 select-none">
+                          <span className="font-display text-2xl font-extrabold text-[#153d23] select-none">
                             {avatarInitial}
                           </span>
                         )}
                       </div>
                       {/* Badge */}
-                      <span className="absolute bottom-0 right-0 flex h-6 w-6 items-center justify-center rounded-full bg-brand-700 text-white border-2 border-white">
+                      <span className="absolute bottom-0 right-0 flex h-6 w-6 items-center justify-center rounded-full bg-[#153d23] text-white border-2 border-white shadow-xs">
                         <Leaf size={11} />
                       </span>
                     </div>
@@ -195,7 +195,7 @@ export default function Profil() {
                     {/* Name & Contact */}
                     <div>
                       <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-                        <h2 className="font-display text-xl sm:text-2xl font-bold text-ink">
+                        <h2 className="font-display text-xl sm:text-2xl font-black text-[#0f2e1b] tracking-tight">
                           {namaNasabah}
                         </h2>
                         <PencilOff size={16} className="text-gray-300" />
@@ -204,11 +204,11 @@ export default function Profil() {
 
                       <div className="mt-3 flex flex-wrap items-center justify-center sm:justify-start gap-x-4 gap-y-1.5 text-xs sm:text-sm text-gray-600">
                         <span className="flex items-center gap-1.5">
-                          <Phone size={14} className="text-brand-600" />
+                          <Phone size={14} className="text-[#153d23]" />
                           {telp}
                         </span>
                         <span className="flex items-center gap-1.5">
-                          <MapPin size={14} className="text-brand-600" />
+                          <MapPin size={14} className="text-[#153d23]" />
                           {alamat}
                         </span>
                       </div>
@@ -216,16 +216,16 @@ export default function Profil() {
                   </div>
 
                   {/* Saldo Poin Highlight — compact solid badge */}
-                  <div className="shrink-0 rounded-2xl bg-brand-800 px-4 py-3 shadow-sm min-w-[170px]">
-                    <p className="flex items-center gap-1.5 text-[11px] font-semibold text-brand-100">
+                  <div className="shrink-0 rounded-2xl bg-gradient-to-br from-[#153d23] to-[#0f2e1b] px-4 py-3 shadow-sm min-w-[170px]">
+                    <p className="flex items-center gap-1.5 text-[11px] font-semibold text-emerald-200/90">
                       <Star size={13} className="fill-amber-400 text-amber-400" />
                       Saldo Poin Anda
                     </p>
                     <div className="mt-1 flex items-baseline gap-1.5">
-                      <span className="font-display text-2xl font-extrabold text-white">
+                      <span className="font-display text-2xl font-black text-white tracking-tight">
                         {saldoPoin.toLocaleString('id-ID')}
                       </span>
-                      <span className="text-xs font-bold text-brand-200">Poin</span>
+                      <span className="text-xs font-bold text-emerald-200">Poin</span>
                     </div>
                   </div>
                 </div>
@@ -234,7 +234,7 @@ export default function Profil() {
               {/* Informasi Pribadi */}
               <div className="rounded-3xl bg-white p-5 sm:p-6 shadow-card border border-gray-100">
                 <h3 className="font-display text-base font-bold text-ink mb-4 flex items-center gap-2">
-                  <User size={17} className="text-brand-600" />
+                  <User size={17} className="text-[#153d23]" />
                   Informasi Pribadi
                 </h3>
 
@@ -274,7 +274,7 @@ export default function Profil() {
               {/* Aktivitas & Layanan */}
               <div className="rounded-3xl bg-white p-5 sm:p-6 shadow-card border border-gray-100">
                 <h3 className="font-display text-base font-bold text-ink mb-3 flex items-center gap-2">
-                  <ReceiptText size={17} className="text-brand-600" />
+                  <ReceiptText size={17} className="text-[#153d23]" />
                   Aktivitas &amp; Layanan
                 </h3>
 
@@ -284,17 +284,17 @@ export default function Profil() {
                     className="flex items-center justify-between py-3.5 hover:bg-sand/30 px-2 rounded-xl transition-colors group"
                   >
                     <div className="flex items-center gap-3">
-                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-600 group-hover:scale-105 transition-transform">
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#153d23]/10 text-[#153d23] group-hover:scale-105 transition-transform">
                         <ReceiptText size={18} />
                       </span>
                       <div>
-                        <p className="text-sm font-bold text-ink group-hover:text-brand-700 transition-colors">
+                        <p className="text-sm font-bold text-ink group-hover:text-[#153d23] transition-colors">
                           Riwayat Setoran Sampah
                         </p>
                         <p className="text-xs text-gray-400 mt-0.5">Lihat status penimbangan dan poin yang masuk</p>
                       </div>
                     </div>
-                    <ChevronRight size={18} className="text-gray-300 group-hover:text-brand-600 group-hover:translate-x-0.5 transition-all shrink-0" />
+                    <ChevronRight size={18} className="text-gray-300 group-hover:text-[#153d23] group-hover:translate-x-0.5 transition-all shrink-0" />
                   </Link>
 
                   <Link
@@ -302,17 +302,17 @@ export default function Profil() {
                     className="flex items-center justify-between py-3.5 hover:bg-sand/30 px-2 rounded-xl transition-colors group"
                   >
                     <div className="flex items-center gap-3">
-                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-600 group-hover:scale-105 transition-transform">
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#153d23]/10 text-[#153d23] group-hover:scale-105 transition-transform">
                         <Gift size={18} />
                       </span>
                       <div>
-                        <p className="text-sm font-bold text-ink group-hover:text-brand-700 transition-colors">
+                        <p className="text-sm font-bold text-ink group-hover:text-[#153d23] transition-colors">
                           Katalog Penukaran Poin
                         </p>
                         <p className="text-xs text-gray-400 mt-0.5">Tukar saldo poin dengan berbagai hadiah menarik</p>
                       </div>
                     </div>
-                    <ChevronRight size={18} className="text-gray-300 group-hover:text-brand-600 group-hover:translate-x-0.5 transition-all shrink-0" />
+                    <ChevronRight size={18} className="text-gray-300 group-hover:text-[#153d23] group-hover:translate-x-0.5 transition-all shrink-0" />
                   </Link>
                 </div>
               </div>
@@ -323,21 +323,21 @@ export default function Profil() {
               {/* Saldo Poin — solid dark green card */}
               <Link
                 to="/riwayat"
-                className="flex items-center justify-between gap-3 rounded-3xl bg-brand-800 px-5 py-5 shadow-card hover:bg-brand-900 transition-colors"
+                className="flex items-center justify-between gap-3 rounded-3xl bg-gradient-to-br from-[#153d23] via-[#12361f] to-[#0f2e1b] px-5 py-5 shadow-card hover:opacity-95 transition-all"
               >
                 <div>
-                  <p className="flex items-center gap-1.5 text-xs font-semibold text-brand-100">
+                  <p className="flex items-center gap-1.5 text-xs font-semibold text-emerald-200/90">
                     <Star size={14} className="fill-amber-400 text-amber-400" />
                     Saldo Poin Anda
                   </p>
                   <div className="mt-1 flex items-baseline gap-1.5">
-                    <span className="font-display text-3xl font-extrabold text-white">
+                    <span className="font-display text-3xl font-black text-white tracking-tight">
                       {saldoPoin.toLocaleString('id-ID')}
                     </span>
-                    <span className="text-xs font-bold text-brand-200">Poin</span>
+                    <span className="text-xs font-bold text-emerald-200">Poin</span>
                   </div>
                 </div>
-                <ChevronRight size={20} className="text-brand-200 shrink-0" />
+                <ChevronRight size={20} className="text-emerald-200 shrink-0" />
               </Link>
 
               {/* Quick Stats Row */}
@@ -359,10 +359,10 @@ export default function Profil() {
               </div>
 
               {/* Promo Card */}
-              <div className="relative overflow-hidden rounded-3xl bg-brand-50/70 border border-brand-100 p-5">
+              <div className="relative overflow-hidden rounded-3xl bg-[#153d23]/5 border border-[#153d23]/15 p-5">
                 <div className="flex gap-4">
                   <div className="flex-1 min-w-0">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-100 text-brand-700 mb-2.5">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#153d23]/10 text-[#153d23] mb-2.5">
                       <Recycle size={16} />
                     </span>
                     <h3 className="font-display text-base font-bold text-ink leading-snug">
@@ -373,7 +373,7 @@ export default function Profil() {
                     </p>
                     <Link
                       to="/kategori-sampah"
-                      className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-brand-700 px-4 py-2 text-xs font-bold text-white hover:bg-brand-800 transition-colors"
+                      className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-[#153d23] px-4 py-2 text-xs font-bold text-white hover:bg-[#0f2e1b] transition-colors"
                     >
                       Lihat lebih lanjut <ChevronRight size={13} />
                     </Link>
@@ -392,7 +392,7 @@ export default function Profil() {
               {/* Informasi Akun */}
               <div className="rounded-3xl bg-white p-5 shadow-card border border-gray-100">
                 <h3 className="font-display text-sm font-bold text-ink mb-3.5 flex items-center gap-2">
-                  <Sparkles size={15} className="text-brand-600" />
+                  <Sparkles size={15} className="text-[#153d23]" />
                   Informasi Akun
                 </h3>
 

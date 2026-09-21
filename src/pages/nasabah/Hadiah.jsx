@@ -161,20 +161,20 @@ function RedeemResultModal({ result, onClose, onGoToRiwayat }) {
                   return (
                     <div
                       key={idx}
-                      className="flex items-center justify-between rounded-2xl bg-brand-50/70 border border-brand-200/80 p-3.5"
+                      className="flex items-center justify-between rounded-2xl bg-[#153d23]/5 border border-[#153d23]/15 p-3.5"
                     >
                       <div className="flex items-center gap-2.5 min-w-0">
-                        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-600 text-[10px] font-extrabold text-white shrink-0">
+                        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#153d23] text-[10px] font-extrabold text-white shrink-0">
                           {idx + 1}
                         </span>
-                        <span className="font-mono text-sm sm:text-base font-bold text-brand-900 tracking-wider truncate select-all">
+                        <span className="font-mono text-sm sm:text-base font-bold text-[#0f2e1b] tracking-wider truncate select-all">
                           {code}
                         </span>
                       </div>
                       <button
                         type="button"
                         onClick={() => handleCopyCode(code, idx)}
-                        className="flex items-center gap-1 rounded-xl bg-white px-2.5 py-1 text-xs font-bold text-brand-800 border border-brand-200 hover:bg-brand-50 transition-colors shadow-2xs cursor-pointer shrink-0"
+                        className="flex items-center gap-1 rounded-xl bg-white px-2.5 py-1 text-xs font-bold text-[#153d23] border border-[#153d23]/20 hover:bg-[#153d23]/5 transition-colors shadow-2xs cursor-pointer shrink-0"
                       >
                         {isCopied ? (
                           <>
@@ -195,7 +195,7 @@ function RedeemResultModal({ result, onClose, onGoToRiwayat }) {
 
               {/* Instructions */}
               <div className="flex items-start gap-2.5 rounded-2xl bg-sand/60 border border-gray-100 p-3 text-xs text-gray-600">
-                <Info size={15} className="text-brand-600 shrink-0 mt-0.5" />
+                <Info size={15} className="text-[#153d23] shrink-0 mt-0.5" />
                 <p>
                   Tunjukkan kode penukaran di atas kepada petugas Bank Sampah saat mengambil hadiah fisik.
                 </p>
@@ -220,7 +220,7 @@ function RedeemResultModal({ result, onClose, onGoToRiwayat }) {
           <button
             type="button"
             onClick={onClose}
-            className="rounded-full bg-brand-600 px-6 py-2.5 text-xs font-bold text-white shadow-sm hover:bg-brand-700 active:scale-95 transition-all cursor-pointer"
+            className="rounded-full bg-[#153d23] px-6 py-2.5 text-xs font-bold text-white shadow-sm hover:bg-[#0f2e1b] active:scale-95 transition-all cursor-pointer"
           >
             Tutup
           </button>
@@ -262,7 +262,7 @@ function ReplaceCartModal({ pendingGift, currentCart, onConfirm, onCancel }) {
           <button
             type="button"
             onClick={onConfirm}
-            className="flex-1 rounded-2xl bg-brand-600 py-2.5 text-xs font-bold text-white shadow-sm hover:bg-brand-700 transition-colors cursor-pointer"
+            className="flex-1 rounded-2xl bg-[#153d23] py-2.5 text-xs font-bold text-white shadow-sm hover:bg-[#0f2e1b] transition-colors cursor-pointer"
           >
             Ya, Ganti
           </button>
@@ -499,31 +499,31 @@ export default function Hadiah() {
     redeeming
 
   return (
-    <div className="flex flex-col gap-6 pb-28">
+    <div className="flex flex-col gap-6 pb-28 max-w-6xl mx-auto">
       {/* Header with Saldo Poin Card at Top Right */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <div className="inline-flex items-center gap-1.5 rounded-full bg-brand-100/70 px-2.5 py-0.5 text-xs font-bold text-brand-800 mb-2 border border-brand-200/50">
-            <Gift size={13} className="text-brand-600" />
-            Katalog Reward
+          <div className="inline-flex items-center gap-1.5 rounded-full bg-[#153d23]/10 px-3 py-0.5 text-xs font-bold text-[#153d23] mb-2 border border-[#153d23]/20">
+            <Gift size={13} className="text-[#153d23]" />
+            Katalog Reward Nasabah
           </div>
-          <h1 className="font-display text-2xl font-bold text-ink">
+          <h1 className="font-display text-2xl sm:text-3xl font-black text-[#0f2e1b] tracking-tight">
             Tukar Poin Hadiah
           </h1>
-          <p className="mt-0.5 text-sm text-gray-500 max-w-lg">
-            Pilih hadiah dan tentukan jumlah quantity yang ingin Anda tukarkan dengan saldo poin.
+          <p className="mt-1 text-xs sm:text-sm text-gray-500 max-w-lg">
+            Pilih hadiah kebutuhan pokok dan tentukan jumlah penukaran menggunakan akumulasi saldo poin Anda.
           </p>
         </div>
 
         {/* Card Saldo Poin Anda (Kanan Atas) */}
-        <div className="self-start sm:self-auto flex items-center gap-3 rounded-2xl bg-white px-4 py-3 border border-gray-100 shadow-card min-w-[190px]">
+        <div className="self-start sm:self-auto flex items-center gap-3 rounded-2xl bg-white px-5 py-3 border border-[#153d23]/10 shadow-card min-w-[200px]">
           <div>
-            <span className="inline-block px-2 py-0.5 rounded-full bg-brand-50 text-[10px] font-bold text-brand-700 border border-brand-100 mb-1">
+            <span className="inline-block px-2 py-0.5 rounded-full bg-[#153d23]/10 text-[10px] font-bold text-[#153d23] border border-[#153d23]/15 mb-1">
               Saldo Poin Anda
             </span>
             <div className="flex items-center gap-1.5">
               <Star size={18} className="fill-amber-400 text-amber-500 shrink-0" />
-              <span className="font-display text-xl font-bold text-ink">
+              <span className="font-display text-xl font-bold text-[#0f2e1b]">
                 {saldoPoin.toLocaleString('id-ID')}
               </span>
               <span className="text-xs font-medium text-gray-400">Poin</span>
@@ -567,7 +567,7 @@ export default function Hadiah() {
             type="button"
             onClick={loadData}
             title="Muat ulang katalog"
-            className="flex items-center gap-1.5 text-xs font-semibold text-brand-600 hover:text-brand-700 transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 text-xs font-semibold text-[#153d23] hover:text-[#0f2e1b] transition-colors cursor-pointer"
           >
             <RefreshCw size={13} className={loading ? 'animate-spin' : ''} />
             <span>Refresh</span>
@@ -594,7 +594,7 @@ export default function Hadiah() {
         {/* Empty State */}
         {!loading && hadiahList.length === 0 && !errorMsg && (
           <div className="flex flex-col items-center justify-center rounded-3xl bg-white p-10 shadow-card border border-gray-100 text-center">
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-brand-50 text-brand-600 mb-4">
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#153d23]/10 text-[#153d23] mb-4">
               <Gift size={30} strokeWidth={1.75} />
             </div>
             <h3 className="font-display text-lg font-bold text-ink">Belum Ada Hadiah Tersedia</h3>
@@ -628,13 +628,13 @@ export default function Hadiah() {
                   key={id}
                   className={`group flex flex-col justify-between overflow-hidden rounded-3xl bg-white p-3.5 shadow-card border transition-all duration-200 ${
                     isSelectedInCart
-                      ? 'border-brand-500 ring-2 ring-brand-100 shadow-md'
-                      : 'border-gray-100 hover:border-brand-200 hover:shadow-md'
+                      ? 'border-[#153d23] ring-2 ring-[#153d23]/15 shadow-md'
+                      : 'border-gray-100 hover:border-[#153d23]/30 hover:shadow-md'
                   }`}
                 >
                   <div>
                     {/* Compact Image */}
-                    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-gradient-to-br from-brand-50/60 to-brand-100/30 flex items-center justify-center mb-3">
+                    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-gradient-to-br from-[#153d23]/5 to-[#153d23]/10 flex items-center justify-center mb-3">
                       {fotoUrl ? (
                         <>
                           <img
@@ -671,7 +671,7 @@ export default function Hadiah() {
                               ? 'bg-red-500/90 text-white'
                               : stok <= 5
                               ? 'bg-amber-500/90 text-white'
-                              : 'bg-brand-900/80 text-white'
+                              : 'bg-[#153d23]/80 text-white'
                           }`}
                         >
                           <Package size={10} />
@@ -681,7 +681,7 @@ export default function Hadiah() {
                     </div>
 
                     {/* Title & Info */}
-                    <h3 className="font-bold text-xs sm:text-sm text-ink group-hover:text-brand-700 transition-colors line-clamp-1">
+                    <h3 className="font-bold text-xs sm:text-sm text-ink group-hover:text-[#153d23] transition-colors line-clamp-1">
                       {nama}
                     </h3>
                     {deskripsi && (
@@ -693,7 +693,7 @@ export default function Hadiah() {
                     {/* Points Pill */}
                     <div className="mt-2 flex items-center gap-1">
                       <Star size={13} className="fill-amber-400 text-amber-500 shrink-0" />
-                      <span className="font-display text-sm font-bold text-brand-800">
+                      <span className="font-display text-sm font-bold text-[#153d23]">
                         {poinDibutuhkan.toLocaleString('id-ID')}
                       </span>
                       <span className="text-[11px] font-semibold text-gray-400">Poin / item</span>
@@ -724,10 +724,10 @@ export default function Hadiah() {
                         type="button"
                         disabled={redeeming}
                         onClick={() => handleAddToCart(gift)}
-                        className={`w-full rounded-full py-2 text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-xs ${
+                        className={`w-full rounded-full py-2.5 text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-xs ${
                           isSelectedInCart
-                            ? 'bg-brand-50 text-brand-800 border border-brand-300 hover:bg-brand-100'
-                            : 'bg-brand-600 text-white hover:bg-brand-700 active:scale-95'
+                            ? 'bg-[#153d23]/10 text-[#153d23] border border-[#153d23]/30 hover:bg-[#153d23]/15'
+                            : 'bg-[#153d23] text-white hover:bg-[#0f2e1b] active:scale-95 shadow-md shadow-[#153d23]/20'
                         }`}
                       >
                         <ShoppingCart size={13} />
@@ -748,11 +748,11 @@ export default function Hadiah() {
 
       {/* ── Bottom Bar / Popup Keranjang with Quantity & Sequential Redeem ── */}
       {cart && (
-        <div className="fixed bottom-4 sm:bottom-6 left-3 right-3 sm:left-6 sm:right-6 max-w-3xl mx-auto z-40 bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl shadow-2xl border-2 border-brand-300/80 p-3.5 sm:p-4 animate-slideUp">
+        <div className="fixed bottom-4 sm:bottom-6 left-3 right-3 sm:left-6 sm:right-6 max-w-3xl mx-auto z-40 bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl shadow-2xl border-2 border-[#153d23]/30 p-3.5 sm:p-4 animate-slideUp">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4">
             {/* Left: Gift Thumbnail & Info */}
             <div className="flex items-center gap-3 min-w-0">
-              <div className="h-11 w-11 sm:h-12 sm:w-12 rounded-2xl bg-brand-50 border border-brand-200/80 flex items-center justify-center overflow-hidden shrink-0">
+              <div className="h-11 w-11 sm:h-12 sm:w-12 rounded-2xl bg-[#153d23]/5 border border-[#153d23]/20 flex items-center justify-center overflow-hidden shrink-0">
                 {resolveFotoUrl(cart.gift.foto || cart.gift.gambar || cart.gift.imageUrl) ? (
                   <>
                     <img
@@ -782,7 +782,7 @@ export default function Hadiah() {
                 )}
               </div>
               <div className="min-w-0 flex-1">
-                <p className="font-bold text-xs sm:text-sm text-ink truncate">
+                <p className="font-bold text-xs sm:text-sm text-[#0f2e1b] truncate">
                   {cart.gift.namaHadiah ?? cart.gift.nama}
                 </p>
                 <p className="text-[11px] text-gray-500">
@@ -805,7 +805,7 @@ export default function Hadiah() {
                 >
                   <Minus size={14} />
                 </button>
-                <span className="w-7 text-center font-display text-sm sm:text-base font-bold text-ink">
+                <span className="w-7 text-center font-display text-sm sm:text-base font-bold text-[#0f2e1b]">
                   {cart.quantity}
                 </span>
                 <button
@@ -830,7 +830,7 @@ export default function Hadiah() {
                 <p className="text-[10px] sm:text-[11px] font-semibold text-gray-400">Total Poin:</p>
                 <div className="flex items-center justify-end gap-1">
                   <Star size={13} className="fill-amber-400 text-amber-500 shrink-0" />
-                  <span className="font-display text-sm sm:text-base font-bold text-brand-800">
+                  <span className="font-display text-sm sm:text-base font-bold text-[#153d23]">
                     {cartTotalPoin.toLocaleString('id-ID')}
                   </span>
                 </div>
@@ -841,7 +841,7 @@ export default function Hadiah() {
                 type="button"
                 disabled={redeeming || cartTotalPoin > saldoPoin || cart.quantity <= 0}
                 onClick={handleExecuteRedeem}
-                className="flex items-center justify-center gap-2 rounded-2xl bg-brand-600 px-5 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-white shadow-md hover:bg-brand-700 active:scale-[0.98] transition-all cursor-pointer disabled:opacity-60 shrink-0"
+                className="flex items-center justify-center gap-2 rounded-2xl bg-[#153d23] hover:bg-[#0f2e1b] px-5 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-white shadow-md shadow-[#153d23]/25 active:scale-[0.98] transition-all cursor-pointer disabled:opacity-60 shrink-0"
               >
                 {redeeming ? (
                   <>

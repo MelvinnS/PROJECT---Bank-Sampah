@@ -251,15 +251,15 @@ export default function Setor() {
   }
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 max-w-6xl mx-auto">
       {/* Header Info */}
       <div className="relative flex items-start justify-between gap-4">
         <div className="min-w-0">
-          <div className="inline-flex items-center gap-1.5 rounded-full bg-brand-100/70 px-2.5 py-0.5 text-xs font-bold text-brand-800 mb-2 border border-brand-200/50">
-            <Recycle size={13} className="text-brand-600" />
+          <div className="inline-flex items-center gap-1.5 rounded-full bg-[#153d23]/10 px-3 py-0.5 text-xs font-bold text-[#153d23] mb-2 border border-[#153d23]/20">
+            <Recycle size={13} className="text-[#153d23]" />
             Setor Sampah Nasabah
           </div>
-          <h1 className="font-display text-2xl sm:text-3xl font-bold text-ink">
+          <h1 className="font-display text-2xl sm:text-3xl font-black text-[#0f2e1b] tracking-tight">
             Ajukan Setoran Sampah
           </h1>
           <p className="mt-0.5 text-sm text-gray-500">
@@ -269,7 +269,7 @@ export default function Setor() {
 
         {/* Decorative leaf branch + handwritten note */}
         <div className="hidden sm:flex shrink-0 items-start gap-2 pt-1">
-          <p className="font-handwriting text-lg leading-tight text-brand-700 -rotate-3 mt-3 text-right">
+          <p className="font-handwriting text-lg leading-tight text-[#153d23] -rotate-3 mt-3 text-right">
             Langkah kecil<br />untuk perubahan<br />besar
           </p>
          
@@ -317,7 +317,7 @@ export default function Setor() {
           <div className="rounded-3xl bg-white p-5 sm:p-6 shadow-card border border-gray-100">
             {/* Step / Section Title */}
             <div className="flex items-center gap-2 mb-4 pb-3 border-b border-gray-100">
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-600 text-[11px] font-bold text-white">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#153d23] text-[11px] font-bold text-white">
                 1
               </span>
               <h2 className="font-display text-base font-bold text-ink">
@@ -328,7 +328,7 @@ export default function Setor() {
             {/* Tanggal Setor */}
             <div className="mb-5">
               <label className="block text-xs font-bold text-gray-700 mb-1.5" htmlFor="tanggal-setor">
-                Tanggal Setor <span className="text-brand-600">*</span>
+                Tanggal Setor <span className="text-[#153d23]">*</span>
               </label>
               <div className="relative">
                 <input
@@ -337,7 +337,7 @@ export default function Setor() {
                   required
                   value={tanggal}
                   onChange={(e) => setTanggal(e.target.value)}
-                  className="w-full rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm text-ink shadow-xs focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100 transition-all cursor-pointer font-medium"
+                  className="w-full rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm text-ink shadow-xs focus:border-[#153d23] focus:outline-none focus:ring-2 focus:ring-[#153d23]/15 transition-all cursor-pointer font-medium"
                 />
               </div>
             </div>
@@ -345,7 +345,7 @@ export default function Setor() {
             {/* Section Daftar Sampah */}
             <div className="mb-5">
               <div className="flex items-center gap-2 mb-3">
-                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-600 text-[11px] font-bold text-white">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#153d23] text-[11px] font-bold text-white">
                   2
                 </span>
                 <h2 className="font-display text-base font-bold text-ink">
@@ -356,10 +356,10 @@ export default function Setor() {
               {/* Table Column Labels */}
               <div className="hidden sm:grid grid-cols-12 gap-3 mb-1.5 text-[11px] font-bold text-gray-500 px-1">
                 <div className="col-span-6">
-                  Jenis Sampah <span className="text-brand-600">*</span>
+                  Jenis Sampah <span className="text-[#153d23]">*</span>
                 </div>
                 <div className="col-span-4">
-                  Berat (Kg) <span className="text-brand-600">*</span>
+                  Berat (Kg) <span className="text-[#153d23]">*</span>
                 </div>
                 <div className="col-span-2 text-right">Aksi</div>
               </div>
@@ -378,7 +378,7 @@ export default function Setor() {
                   return (
                     <div
                       key={item.id}
-                      className="relative rounded-2xl border border-gray-100 bg-sand/20 p-3 sm:p-3.5 transition-all hover:border-brand-200"
+                      className="relative rounded-2xl border border-gray-100 bg-sand/20 p-3 sm:p-3.5 transition-all hover:border-[#153d23]/30"
                     >
                       <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                         {/* Thumbnail + name/description */}
@@ -445,7 +445,7 @@ export default function Setor() {
                               onChange={(e) =>
                                 handleItemChange(item.id, 'beratKg', e.target.value)
                               }
-                              className="w-full rounded-xl border border-gray-200 bg-white pl-3 pr-8 py-2 text-sm text-ink font-semibold shadow-xs focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100 transition-all"
+                              className="w-full rounded-xl border border-gray-200 bg-white pl-3 pr-8 py-2 text-sm text-ink font-semibold shadow-xs focus:border-[#153d23] focus:outline-none focus:ring-2 focus:ring-[#153d23]/15 transition-all"
                             />
                             <span className="absolute inset-y-0 right-0 flex items-center pr-2.5 text-xs font-medium text-gray-400 pointer-events-none">
                               kg
@@ -457,7 +457,7 @@ export default function Setor() {
                             <button
                               type="button"
                               onClick={() => handleRemoveItem(item.id)}
-                              className="p-1.5 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors shrink-0"
+                              className="p-1.5 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors shrink-0 cursor-pointer"
                               title="Hapus baris"
                             >
                               <Trash2 size={15} />
@@ -472,7 +472,7 @@ export default function Setor() {
                           <span>
                             Rp {(itemBerat * selectedCat.harga).toLocaleString('id-ID')}
                           </span>
-                          <span className="font-semibold text-brand-700 inline-flex items-center gap-1 bg-white px-2 py-0.5 rounded-md border border-brand-100">
+                          <span className="font-semibold text-[#153d23] inline-flex items-center gap-1 bg-[#153d23]/5 px-2 py-0.5 rounded-md border border-[#153d23]/15">
                             <Star size={10} className="fill-amber-400 text-amber-500" />
                             +{Math.round(itemPoin * 10) / 10} Poin
                           </span>
@@ -487,7 +487,7 @@ export default function Setor() {
               <button
                 type="button"
                 onClick={handleAddItem}
-                className="mt-3.5 w-full py-2.5 rounded-2xl border border-dashed border-brand-300 bg-brand-50/40 text-xs font-bold text-brand-700 hover:bg-brand-50 hover:border-brand-400 transition-all cursor-pointer flex items-center justify-center gap-1.5"
+                className="mt-3.5 w-full py-2.5 rounded-2xl border border-dashed border-[#153d23]/30 bg-[#153d23]/5 text-xs font-bold text-[#153d23] hover:bg-[#153d23]/10 hover:border-[#153d23]/50 transition-all cursor-pointer flex items-center justify-center gap-1.5"
               >
                 <Plus size={15} strokeWidth={2.5} />
                 <span>+ Tambah Kategori Sampah Lainnya</span>
@@ -497,7 +497,7 @@ export default function Setor() {
             {/* Catatan Tambahan */}
             <div>
               <div className="flex items-center gap-2 mb-2.5">
-                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-600 text-[11px] font-bold text-white">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#153d23] text-[11px] font-bold text-white">
                   3
                 </span>
                 <h2 className="font-display text-base font-bold text-ink">
@@ -511,7 +511,7 @@ export default function Setor() {
                   value={catatan}
                   onChange={(e) => setCatatan(e.target.value)}
                   placeholder="Contoh: Sampah sudah dipilah dan dimasukkan ke dalam 2 kardus rapi."
-                  className="w-full rounded-2xl border border-gray-200 bg-sand/30 p-3 pb-6 text-xs sm:text-sm text-ink placeholder-gray-400 shadow-xs focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100 transition-all"
+                  className="w-full rounded-2xl border border-gray-200 bg-sand/30 p-3 pb-6 text-xs sm:text-sm text-ink placeholder-gray-400 shadow-xs focus:border-[#153d23] focus:outline-none focus:ring-2 focus:ring-[#153d23]/15 transition-all"
                 />
                 <span className="absolute bottom-2.5 right-3.5 text-[11px] text-gray-400 font-medium">
                   {catatan.length}/200
@@ -526,7 +526,7 @@ export default function Setor() {
           <div className="rounded-3xl bg-white p-5 sm:p-6 shadow-card border border-gray-100">
             {/* Card Header */}
             <div className="flex items-center gap-2 pb-3 border-b border-gray-100">
-              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-50 text-brand-600">
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#153d23]/10 text-[#153d23]">
                 <Sparkles size={15} />
               </span>
               <div>
@@ -538,14 +538,14 @@ export default function Setor() {
             </div>
 
             {/* Total Points Highlight */}
-            <div className="my-4 rounded-2xl bg-brand-50/80 p-4 text-center border border-brand-100/80">
-              <p className="text-[11px] font-semibold text-brand-800">Total Poin yang Didapat</p>
+            <div className="my-4 rounded-2xl bg-gradient-to-br from-[#153d23]/5 to-[#153d23]/10 p-4 text-center border border-[#153d23]/15">
+              <p className="text-[11px] font-semibold text-[#153d23]">Total Poin yang Didapat</p>
               <div className="mt-1 flex items-center justify-center gap-1.5">
                 <Star size={20} className="fill-amber-400 text-amber-500 shrink-0" />
-                <span className="font-display text-2xl sm:text-3xl font-extrabold text-brand-900 tracking-tight">
+                <span className="font-display text-2xl sm:text-3xl font-extrabold text-[#0f2e1b] tracking-tight">
                   {summary.totalPoin}
                 </span>
-                <span className="text-xs font-bold text-brand-700 self-end mb-1">Poin</span>
+                <span className="text-xs font-bold text-[#153d23] self-end mb-1">Poin</span>
               </div>
             </div>
 
@@ -580,7 +580,7 @@ export default function Setor() {
             <button
               type="submit"
               disabled={submitting || loadingCategories || Boolean(errorCategoryMsg)}
-              className="w-full flex items-center justify-center gap-2 rounded-full bg-brand-600 py-3 text-sm font-bold text-white shadow-sm hover:bg-brand-700 active:scale-[0.99] disabled:opacity-70 transition-all cursor-pointer"
+              className="w-full flex items-center justify-center gap-2 rounded-full bg-[#153d23] py-3.5 text-sm font-bold text-white shadow-md shadow-[#153d23]/20 hover:bg-[#0f2e1b] active:scale-[0.99] disabled:opacity-70 transition-all cursor-pointer"
             >
               {submitting ? (
                 <div className="flex items-center gap-2">
@@ -599,7 +599,7 @@ export default function Setor() {
 
           {/* Tahukah Kamu? */}
           <div className="flex overflow-hidden rounded-3xl bg-white shadow-card border border-gray-100">
-            <div className="relative w-20 shrink-0 overflow-hidden bg-emerald-100">
+            <div className="relative w-20 shrink-0 overflow-hidden bg-[#153d23]/10">
               <img
                 src={TAHUKAH_KAMU_PHOTO}
                 alt="Daur ulang sampah"
@@ -618,7 +618,7 @@ export default function Setor() {
               <button
                 type="button"
                 onClick={() => navigate('/kategori-sampah')}
-                className="mt-2 inline-flex items-center gap-0.5 text-[11px] font-semibold text-emerald-700 hover:text-emerald-800 transition-colors"
+                className="mt-2 inline-flex items-center gap-0.5 text-[11px] font-semibold text-[#153d23] hover:text-[#0f2e1b] transition-colors"
               >
                 Pelajari lebih lanjut <ChevronRight size={12} />
               </button>

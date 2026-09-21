@@ -1,7 +1,7 @@
 import { Recycle, Gift } from 'lucide-react'
 
 const TYPE_CONFIG = {
-  setor: { icon: Recycle, bg: 'bg-brand-50', fg: 'text-brand-600', sign: '+' },
+  setor: { icon: Recycle, bg: 'bg-[#153d23]/10', fg: 'text-[#153d23]', sign: '+' },
   tukar: { icon: Gift, bg: 'bg-amber-50', fg: 'text-amber-600', sign: '-' },
 }
 

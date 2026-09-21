@@ -56,8 +56,8 @@ export default function CategoryDropdown({
           isDisabled
             ? 'border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed'
             : open
-            ? 'border-brand-500 bg-white ring-2 ring-brand-100 shadow-sm cursor-pointer'
-            : 'border-gray-200 bg-white text-ink hover:border-brand-300 cursor-pointer shadow-xs'
+            ? 'border-[#153d23] bg-white ring-2 ring-[#153d23]/15 shadow-sm cursor-pointer'
+            : 'border-gray-200 bg-white text-ink hover:border-[#153d23]/40 cursor-pointer shadow-xs'
         }`}
       >
         <span className={`truncate ${selected ? 'text-ink font-medium' : 'text-gray-400'}`}>
@@ -98,8 +98,8 @@ export default function CategoryDropdown({
                     onClick={() => handleSelect(String(opt.id))}
                     className={`w-full flex items-center justify-between gap-2.5 px-3.5 py-2.5 text-left text-sm transition-colors ${
                       isSelected
-                        ? 'bg-brand-50 text-brand-700 font-medium'
-                        : 'text-ink hover:bg-brand-50/60 hover:text-brand-700'
+                        ? 'bg-[#153d23]/10 text-[#153d23] font-medium'
+                        : 'text-ink hover:bg-[#153d23]/5 hover:text-[#153d23]'
                     }`}
                   >
                     <div className="flex items-center gap-2.5 min-w-0">
@@ -133,7 +133,7 @@ export default function CategoryDropdown({
                       </div>
                     </div>
                     {isSelected && (
-                      <Check size={16} className="shrink-0 text-brand-600 ml-2" />
+                      <Check size={16} className="shrink-0 text-[#153d23] ml-2" />
                     )}
                   </button>
                 </li>

@@ -10,7 +10,7 @@ const JENIS_BADGE = {
   kertas:  { bg: 'bg-amber-50 text-amber-700 border-amber-200', label: 'Kertas / Kardus' },
   logam:   { bg: 'bg-slate-100 text-slate-600 border-slate-300', label: 'Logam' },
   kaca:    { bg: 'bg-cyan-50 text-cyan-700 border-cyan-200', label: 'Kaca' },
-  default: { bg: 'bg-brand-50 text-brand-700 border-brand-200', label: 'Sampah' },
+  default: { bg: 'bg-[#153d23]/10 text-[#153d23] border-[#153d23]/20', label: 'Sampah' },
 }
 
 // ── Bottom Sheet — defined OUTSIDE parent to prevent remount ──
@@ -141,15 +141,15 @@ function CategoryBottomSheet({ item, onClose, onSetor }) {
             <div className="grid grid-cols-2 gap-3">
               <div className="flex flex-col items-center justify-center rounded-2xl bg-gray-50 border border-gray-100 p-3.5 text-center">
                 <p className="text-[11px] text-gray-400 font-semibold mb-1">Harga per kg</p>
-                <p className="font-display text-lg font-bold text-ink">
+                <p className="font-display text-lg font-bold text-[#0f2e1b]">
                   Rp {harga.toLocaleString('id-ID')}
                 </p>
               </div>
-              <div className="flex flex-col items-center justify-center rounded-2xl bg-brand-50/80 border border-brand-100 p-3.5 text-center">
-                <p className="text-[11px] text-brand-600 font-semibold mb-1">Poin per kg</p>
+              <div className="flex flex-col items-center justify-center rounded-2xl bg-[#153d23]/5 border border-[#153d23]/10 p-3.5 text-center">
+                <p className="text-[11px] text-[#153d23] font-semibold mb-1">Poin per kg</p>
                 <div className="flex items-center justify-center gap-1">
                   <Star size={15} className="fill-amber-400 text-amber-500 shrink-0" />
-                  <p className="font-display text-lg font-extrabold text-brand-700">+{poin}</p>
+                  <p className="font-display text-lg font-black text-[#153d23]">+{poin}</p>
                 </div>
               </div>
             </div>
@@ -162,7 +162,7 @@ function CategoryBottomSheet({ item, onClose, onSetor }) {
                   onClose()
                   onSetor()
                 }}
-                className="w-full flex items-center justify-center gap-2 rounded-2xl bg-brand-600 py-3.5 text-sm font-bold text-white shadow-md hover:bg-brand-700 active:scale-[0.99] transition-all cursor-pointer"
+                className="w-full flex items-center justify-center gap-2 rounded-2xl bg-[#153d23] hover:bg-[#0f2e1b] py-3.5 text-sm font-bold text-white shadow-lg shadow-[#153d23]/20 active:scale-[0.99] transition-all cursor-pointer"
               >
                 <span>Setor Sekarang</span>
                 <span>→</span>
@@ -212,19 +212,19 @@ export default function KategoriSampah() {
   })
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 max-w-6xl mx-auto">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <div className="inline-flex items-center gap-1.5 rounded-full bg-brand-100/70 px-2.5 py-0.5 text-xs font-bold text-brand-800 mb-2 border border-brand-200/50">
-            <Leaf size={13} className="text-brand-600" />
-            Informasi Sampah
+          <div className="inline-flex items-center gap-1.5 rounded-full bg-[#153d23]/10 px-3 py-0.5 text-xs font-bold text-[#153d23] mb-2 border border-[#153d23]/20">
+            <Leaf size={13} className="text-[#153d23]" />
+            Katalog Sampah Daur Ulang
           </div>
-          <h1 className="font-display text-2xl font-bold text-ink">
+          <h1 className="font-display text-2xl sm:text-3xl font-black text-[#0f2e1b] tracking-tight">
             Katalog Jenis Sampah &amp; Poin
           </h1>
-          <p className="mt-0.5 text-sm text-gray-500">
-            Daftar jenis sampah yang dapat disetorkan beserta harga dan poin per kilogram.
+          <p className="mt-1 text-xs sm:text-sm text-gray-500">
+            Daftar jenis sampah terpilah yang dapat disetorkan beserta harga dan poin reward per kilogram.
           </p>
         </div>
 
@@ -232,7 +232,7 @@ export default function KategoriSampah() {
           type="button"
           onClick={fetchCategories}
           title="Muat ulang"
-          className="self-start sm:self-auto flex items-center gap-1.5 rounded-xl border border-gray-200 bg-white px-3.5 py-2 text-xs font-semibold text-gray-600 hover:text-brand-700 hover:bg-brand-50 transition-colors"
+          className="self-start sm:self-auto flex items-center gap-1.5 rounded-full border border-gray-200 bg-white px-4 py-2 text-xs font-bold text-gray-700 hover:text-[#153d23] hover:border-[#153d23]/30 transition-all cursor-pointer shadow-xs"
         >
           <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
           <span>Refresh</span>
@@ -246,8 +246,8 @@ export default function KategoriSampah() {
           type="text"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Cari jenis sampah (misal: botol, kardus)..."
-          className="w-full rounded-2xl border border-gray-200 bg-white pl-10 pr-4 py-2.5 text-sm text-ink placeholder-gray-400 shadow-xs focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100 transition-all"
+          placeholder="Cari jenis sampah (misal: botol, kardus, kaleng)..."
+          className="w-full rounded-2xl border border-gray-200 bg-white pl-10 pr-4 py-3 text-sm text-[#0f2e1b] placeholder-gray-400 shadow-xs focus:border-[#153d23] focus:outline-none focus:ring-2 focus:ring-[#153d23]/15 transition-all"
         />
       </div>
 
@@ -300,7 +300,7 @@ export default function KategoriSampah() {
                 key={id}
                 type="button"
                 onClick={() => setSelectedItem(k)}
-                className="group flex flex-col justify-between overflow-hidden rounded-3xl bg-white p-3.5 shadow-card border border-gray-100 hover:border-brand-200 hover:shadow-md transition-all text-left cursor-pointer"
+                className="group flex flex-col justify-between overflow-hidden rounded-3xl bg-white p-4 shadow-card border border-[#153d23]/10 hover:border-[#153d23]/30 hover:shadow-lg transition-all text-left cursor-pointer"
               >
                 <div>
                   <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-gray-100 mb-3">
@@ -309,7 +309,7 @@ export default function KategoriSampah() {
                         <img
                           src={fotoUrl}
                           alt={nama}
-                          className="absolute inset-0 w-full h-full object-cover"
+                          className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           onError={(e) => {
                             e.currentTarget.style.display = 'none'
                             if (e.currentTarget.nextSibling) {
@@ -325,7 +325,7 @@ export default function KategoriSampah() {
                       <WasteIcon item={k} jenis={k.jenis} />
                     )}
                   </div>
-                  <h3 className="font-bold text-xs sm:text-sm text-ink group-hover:text-brand-700 transition-colors line-clamp-1 mb-1">
+                  <h3 className="font-bold text-xs sm:text-sm text-[#0f2e1b] group-hover:text-[#153d23] transition-colors line-clamp-1 mb-1">
                     {nama}
                   </h3>
                   <p className="text-[11px] text-gray-400 font-medium mb-2.5">
@@ -334,7 +334,7 @@ export default function KategoriSampah() {
                 </div>
 
                 <div>
-                  <span className="inline-flex items-center gap-1 rounded-full bg-brand-50 border border-brand-100 px-2.5 py-0.5 text-[11px] font-bold text-brand-700">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-[#153d23]/10 border border-[#153d23]/15 px-2.5 py-0.5 text-[11px] font-bold text-[#153d23]">
                     <Star size={11} className="fill-amber-400 text-amber-500" />
                     +{poin} Poin/kg
                   </span>
@@ -348,7 +348,7 @@ export default function KategoriSampah() {
       {/* Empty State */}
       {!loading && filtered.length === 0 && !errorMsg && (
         <div className="flex flex-col items-center justify-center rounded-3xl bg-white p-12 shadow-card border border-gray-100 text-center">
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-50 text-brand-600 mb-3">
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#153d23]/10 text-[#153d23] mb-3">
             <Leaf size={26} />
           </div>
           <h3 className="font-display text-base font-bold text-ink">

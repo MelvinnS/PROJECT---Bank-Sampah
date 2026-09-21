@@ -1,56 +1,38 @@
-﻿import { useEffect, useState, useCallback } from 'react'
-import { ChevronRight, Leaf, Recycle, Star, Gift, ClipboardList, RefreshCw, AlertCircle } from 'lucide-react'
+import { useEffect, useState, useCallback } from 'react'
+import {
+  ChevronRight,
+  Leaf,
+  Recycle,
+  Star,
+  Gift,
+  ClipboardList,
+  RefreshCw,
+  AlertCircle,
+  ArrowRight,
+  ArrowUpRight,
+  Sparkles,
+  ShieldCheck,
+  TrendingUp,
+} from 'lucide-react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import TransaksiItem from '../../components/nasabah/TransaksiItem'
-import WasteIcon from '../../components/nasabah/WasteIcon'
 import { getDashboardSummary, getKategoriSampah } from '../../services/nasabahService'
 import { resolveFotoUrl } from '../../services/api'
 
-// Decorative plant SVG illustration in top-right greeting
-function PlantIllustration({ className = '' }) {
-  return (
-    <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-      <ellipse cx="60" cy="108" rx="28" ry="6" fill="#217239" opacity="0.18" />
-      {/* Pot */}
-      <path d="M44 95 Q44 108 60 108 Q76 108 76 95 L72 80 H48 Z" fill="#6b8f71" />
-      <rect x="42" y="78" width="36" height="6" rx="3" fill="#4d7a55" />
-      {/* Main stem */}
-      <path d="M60 78 Q58 60 56 44" stroke="#2d6a4f" strokeWidth="2.5" strokeLinecap="round" />
-      {/* Leaves */}
-      <path d="M56 44 Q38 30 30 14 Q48 18 56 44Z" fill="#52b788" />
-      <path d="M56 44 Q74 28 84 12 Q68 20 56 44Z" fill="#40916c" />
-      <path d="M57 58 Q40 50 32 38 Q50 42 57 58Z" fill="#74c69d" />
-      <path d="M57 58 Q74 48 82 36 Q66 44 57 58Z" fill="#52b788" />
-      <path d="M58 70 Q46 64 40 54 Q54 58 58 70Z" fill="#95d5b2" />
-      <path d="M58 70 Q70 62 76 52 Q64 58 58 70Z" fill="#74c69d" />
-    </svg>
-  )
-}
-
-// CTA plant illustration
-function PlantCtaIllustration({ className = '' }) {
-  return (
-    <svg viewBox="0 0 100 130" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-      <ellipse cx="50" cy="122" rx="22" ry="5" fill="#217239" opacity="0.15" />
-      <path d="M38 100 Q38 118 50 118 Q62 118 62 100 L58 86 H42 Z" fill="#52b788" />
-      <rect x="36" y="84" width="28" height="5" rx="2.5" fill="#40916c" />
-      <path d="M50 84 Q48 66 46 50" stroke="#2d6a4f" strokeWidth="2.5" strokeLinecap="round" />
-      <path d="M46 50 Q30 36 22 20 Q40 24 46 50Z" fill="#74c69d" />
-      <path d="M46 50 Q62 34 70 18 Q54 26 46 50Z" fill="#52b788" />
-      <path d="M47 64 Q33 56 26 44 Q42 48 47 64Z" fill="#95d5b2" />
-      <path d="M47 64 Q61 54 68 42 Q54 50 47 64Z" fill="#74c69d" />
-      <path d="M48 76 Q38 70 32 60 Q44 64 48 76Z" fill="#b7e4c7" />
-      <path d="M48 76 Q58 68 64 58 Q54 64 48 76Z" fill="#95d5b2" />
-    </svg>
-  )
-}
+// Local Assets for the Hero Card Deck
+import sampahBotolImg from '../../assets/images/sampahbotol.jpg'
+import sampahKalengImg from '../../assets/images/sampahkaleng.jpg'
+import sampahKardusImg from '../../assets/images/sampahkardus.jpg'
+import hadiahBerasImg from '../../assets/images/hadiahberas.jpg'
+import hadiahMinyakImg from '../../assets/images/hadiahminyak.jpg'
+import hadiahPulsaImg from '../../assets/images/hadiahpulsa.jpg'
 
 export default function Beranda() {
   const { isGuest, session } = useAuth()
   const navigate = useNavigate()
   const [kategori, setKategori] = useState([])
-  const [summary, setSummary]   = useState({
+  const [summary, setSummary] = useState({
     saldoPoinSaatIni: 0,
     totalSampahDisetorKg: 0,
     totalPoinDidapat: 0,
@@ -84,13 +66,11 @@ export default function Beranda() {
           const setorList = Array.isArray(data.setorTerakhir) ? data.setorTerakhir : []
           const tukarList = Array.isArray(data.penukaranTerakhir) ? data.penukaranTerakhir : []
 
-          // Hitung total berat sampah yang disetor dari array setorTerakhir
           const calculatedTotalBerat = setorList.reduce(
             (acc, item) => acc + Number(item.totalBeratKg ?? item.beratKg ?? 0),
             0
           )
 
-          // Transaksi terakhir setor
           let latestSetor = null
           if (setorList.length > 0) {
             const s = setorList[0]
@@ -103,7 +83,6 @@ export default function Beranda() {
             }
           }
 
-          // Transaksi terakhir tukar
           let latestTukar = null
           if (tukarList.length > 0) {
             const t = tukarList[0]
@@ -159,25 +138,61 @@ export default function Beranda() {
     Math.round(((summary.totalSampahDisetorKg ?? 0) / TARGET_KG) * 100)
   )
 
-  return (
-    <div className="flex flex-col gap-7 sm:gap-8 pb-8">
-      {/* ── Sapaan ── */}
-      <div className="flex items-start justify-between">
-        <div className="flex-1 min-w-0 pr-4">
-          <h1 className="font-display text-2xl font-bold text-ink leading-tight">
-            Halo, {isGuest ? 'Tamu' : nama} 👋
-          </h1>
-          <p className="mt-1 text-sm text-gray-500 leading-relaxed max-w-lg">
-            {isGuest
-              ? 'Masuk untuk mulai mengelola setoran sampah Anda.'
-              : 'Terima kasih sudah ikut menjaga lingkungan melalui Bank Sampah Digital. Yuk, lanjutkan kontribusimu!'}
-          </p>
-        </div>
-        <div className="shrink-0 w-20 h-20 sm:w-24 sm:h-24 opacity-90 -mt-2">
-          <PlantIllustration className="w-full h-full" />
-        </div>
-      </div>
+  // Card Deck Items for the Hero section matching reference layout
+  const HERO_DECK = [
+    {
+      title: 'Plastik',
+      badge: 'PET / Cup',
+      image: sampahBotolImg,
+      rotation: '-rotate-[13deg]',
+      translate: 'translate-y-2',
+      bgTag: 'bg-blue-600',
+    },
+    {
+      title: 'Kardus',
+      badge: 'Karton Box',
+      image: sampahKardusImg,
+      rotation: '-rotate-[7deg]',
+      translate: '-translate-y-1',
+      bgTag: 'bg-[#153d23]',
+    },
+    {
+      title: 'Logam',
+      badge: 'Kaleng & Besi',
+      image: sampahKalengImg,
+      rotation: '-rotate-[2deg]',
+      translate: '-translate-y-3',
+      bgTag: 'bg-amber-600',
+    },
+    {
+      title: 'Kaca',
+      badge: 'Botol Bening',
+      image: sampahBotolImg,
+      rotation: 'rotate-[4deg]',
+      translate: '-translate-y-2',
+      bgTag: 'bg-[#1b4332]',
+    },
+    {
+      title: 'Minyak',
+      badge: 'Reward',
+      image: hadiahMinyakImg,
+      rotation: 'rotate-[9deg]',
+      translate: '-translate-y-1',
+      bgTag: 'bg-[#0f2e1b]',
+    },
+    {
+      title: 'Beras',
+      badge: 'Reward Poin',
+      image: hadiahBerasImg,
+      rotation: 'rotate-[15deg]',
+      translate: 'translate-y-2',
+      bgTag: 'bg-emerald-800',
+    },
+  ]
 
+  return (
+    <div className="flex flex-col gap-8 pb-10 max-w-6xl mx-auto">
+      
       {/* ── Error Banner ── */}
       {errorMsg && (
         <div className="flex items-center justify-between gap-3 rounded-2xl bg-red-50 border border-red-200 p-4 text-xs text-red-700 shadow-xs animate-fadeIn">
@@ -196,322 +211,308 @@ export default function Beranda() {
         </div>
       )}
 
-      {/* ── Row 1: Saldo Poin + Dampak Kamu ── */}
+      {/* ════════════════════════════════════════════════════════════
+          HERO SECTION: JENIS SAMPAH & POIN (Persis Desain Referensi)
+      ════════════════════════════════════════════════════════════ */}
+      <section className="relative overflow-hidden rounded-[32px] sm:rounded-[40px] bg-white border border-[#153d23]/10 shadow-card p-6 sm:p-10 lg:p-12 text-center">
+        {/* Subtle Ambient Background Gradients in Deep Green */}
+        <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full bg-[#153d23]/5 blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-24 right-10 w-72 h-72 rounded-full bg-[#1b4332]/5 blur-3xl pointer-events-none" />
+
+        {/* Small user greeting badge inside hero */}
+        <div className="inline-flex items-center gap-2 rounded-full bg-[#153d23]/5 border border-[#153d23]/10 px-3.5 py-1 text-xs font-semibold text-[#153d23] mb-4">
+          <Leaf size={13} className="text-[#153d23]" />
+          <span>Halo, {isGuest ? 'Nasabah Tamu' : nama} 👋</span>
+        </div>
+
+        {/* Headline with Floating Badge Pills (Exact like reference image) */}
+        <div className="relative max-w-2xl mx-auto">
+          {/* Left Pill Tag */}
+          <div className="hidden sm:inline-flex items-center gap-1 absolute -top-2.5 -left-6 lg:-left-12 rotate-[-8deg] rounded-full bg-[#1d4ed8] px-3 py-1 text-[11px] font-bold text-white shadow-md select-none animate-bounce">
+            <span>@botol_kaca</span>
+          </div>
+
+          <h1 className="font-display text-3xl sm:text-5xl lg:text-6xl font-black text-[#0f2e1b] tracking-tight leading-[1.1]">
+            Pilah Sampah, Raih Nilai Poin Maksimal.
+          </h1>
+
+          {/* Right Pill Tag */}
+          <div className="hidden sm:inline-flex items-center gap-1 absolute -bottom-2 -right-4 lg:-right-10 rotate-[6deg] rounded-full bg-[#153d23] px-3 py-1 text-[11px] font-bold text-white shadow-md select-none animate-pulse">
+            <span>@kardus_kertas</span>
+          </div>
+        </div>
+
+        {/* ── Overlapping Fanned Card Deck (EXACT layout like reference photo) ── */}
+        <div className="my-7 sm:my-10 flex items-center justify-center overflow-x-auto py-6 px-4 no-scrollbar">
+          <div className="flex items-center justify-center -space-x-4 sm:-space-x-7 md:-space-x-8">
+            {HERO_DECK.map((item, idx) => (
+              <div
+                key={idx}
+                onClick={() => goToProtected('/kategori-sampah')}
+                className={`group relative w-24 h-32 sm:w-32 sm:h-44 md:w-36 md:h-48 rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl border-2 sm:border-[3px] border-white cursor-pointer transform ${item.rotation} ${item.translate} hover:rotate-0 hover:-translate-y-5 hover:scale-110 hover:z-30 transition-all duration-300 ease-out bg-gray-100 shrink-0`}
+              >
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-2 sm:p-3 text-left">
+                  <span
+                    className={`inline-block w-max rounded-full ${item.bgTag} px-1.5 sm:px-2 py-0.5 text-[8px] sm:text-[9px] font-extrabold text-white mb-0.5`}
+                  >
+                    {item.badge}
+                  </span>
+                  <p className="text-xs sm:text-sm font-bold text-white leading-tight">
+                    {item.title}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Subtitle Under Card Deck */}
+        <p className="text-xs sm:text-sm text-gray-500 max-w-xl mx-auto leading-relaxed">
+          Kumpulkan sampah daur ulang terpilah dari rumah, timbang bersama petugas bank sampah, dan tukarkan poin akumulasi dengan berbagai pilihan hadiah kebutuhan sehari-hari.
+        </p>
+
+        {/* ── Action Buttons Underneath Hero (as requested) ── */}
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+          <button
+            type="button"
+            onClick={() => goToProtected('/kategori-sampah')}
+            className="group inline-flex items-center gap-2 rounded-full bg-[#153d23] hover:bg-[#0f2e1b] px-7 py-3.5 text-xs sm:text-sm font-bold text-white shadow-xl shadow-[#153d23]/20 active:scale-95 transition-all cursor-pointer"
+          >
+            <span>Lihat Katalog Jenis Sampah &amp; Poin</span>
+            <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
+          </button>
+
+          <button
+            type="button"
+            onClick={() => goToProtected('/setor')}
+            className="inline-flex items-center gap-2 rounded-full border border-[#153d23]/25 bg-white px-6 py-3.5 text-xs sm:text-sm font-bold text-[#153d23] hover:bg-[#153d23]/5 active:scale-95 transition-all cursor-pointer shadow-xs"
+          >
+            <span>Setor Sampah Sekarang</span>
+          </button>
+        </div>
+      </section>
+
+      {/* ════════════════════════════════════════════════════════════
+          SECTION: SALDO POIN & DAMPAK KAMU (Di Bawah Section Hero)
+      ════════════════════════════════════════════════════════════ */}
       {!isGuest && (
-        <div className="grid grid-cols-1 md:grid-cols-[1.4fr_1fr] gap-4 sm:gap-5">
-          {/* Card Saldo Poin — solid dark green */}
-          <div className="relative overflow-hidden rounded-2xl bg-[#163421] p-5 sm:p-6 text-white shadow-card">
+        <section className="grid grid-cols-1 md:grid-cols-[1.35fr_1fr] gap-5">
+          {/* Card Saldo Poin — Deep Forest Green Palette */}
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#153d23] via-[#12361f] to-[#0f2e1b] p-6 sm:p-7 text-white shadow-card flex flex-col justify-between">
+            {/* Ambient Background Circles */}
+            <div className="absolute -right-10 -bottom-10 w-52 h-52 rounded-full bg-white/5 pointer-events-none" />
+            <div className="absolute top-0 right-1/4 w-32 h-32 rounded-full bg-emerald-500/10 blur-2xl pointer-events-none" />
+
             {loading ? (
               <div className="animate-pulse space-y-4">
                 <div className="h-4 w-28 bg-white/20 rounded" />
-                <div className="h-10 w-44 bg-white/20 rounded" />
+                <div className="h-10 w-48 bg-white/20 rounded" />
                 <div className="h-6 w-36 bg-white/20 rounded-full" />
               </div>
             ) : (
-              <div className="relative flex flex-col sm:flex-row sm:items-stretch gap-4 sm:gap-5">
-                {/* Left: Saldo Poin */}
-                <div className="flex-1 min-w-0 py-0.5">
-                  <p className="text-xs font-semibold text-brand-200 mb-1.5">Saldo Poin</p>
-                  <div className="flex items-baseline gap-2">
-                    <Star size={22} className="fill-amber-300 text-amber-300 shrink-0 mb-0.5" />
-                    <span className="font-display text-4xl font-bold tabular-nums">
-                      {(summary.saldoPoinSaatIni ?? 0).toLocaleString('id-ID')}
-                    </span>
-                    <span className="text-sm font-medium text-brand-200">Poin</span>
-                  </div>
-
-                  {/* +X poin bulan ini badge */}
-                  <div className="mt-3">
-                    <span className="inline-flex items-center gap-1 rounded-full bg-white/15 backdrop-blur-xs px-3 py-1 text-xs font-semibold text-emerald-100">
-                      +{(summary.totalPoinDidapat ?? 0).toLocaleString('id-ID')} poin bulan ini
-                    </span>
-                  </div>
-
-                  {/* Link Lihat Riwayat */}
-                  <button
-                    onClick={() => goToProtected('/riwayat')}
-                    className="mt-4 flex items-center gap-1 text-xs font-semibold text-brand-200 hover:text-white transition-colors cursor-pointer"
-                  >
-                    Lihat Riwayat <ChevronRight size={13} />
-                  </button>
+              <div>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold uppercase tracking-wider text-emerald-200/90">
+                    Saldo Poin Anda
+                  </span>
+                  <span className="h-8 w-8 rounded-full bg-white/10 flex items-center justify-center text-amber-300">
+                    <Star size={16} className="fill-amber-300" />
+                  </span>
                 </div>
 
-                {/* Right: Total Setoran — distinct lighter panel */}
-                <div className="relative shrink-0 sm:w-[168px] rounded-xl bg-white/10 border border-white/10 px-4 py-4 flex flex-col justify-center overflow-hidden">
-                  <span className="pointer-events-none absolute -right-3 -top-3 flex h-12 w-12 items-center justify-center rounded-full bg-white/10">
-                    <Recycle size={16} className="text-emerald-200/70 -translate-x-1 -translate-y-1" />
+                <div className="mt-3 flex items-baseline gap-2">
+                  <span className="font-display text-4xl sm:text-5xl font-black tracking-tight tabular-nums">
+                    {(summary.saldoPoinSaatIni ?? 0).toLocaleString('id-ID')}
                   </span>
-                  <p className="text-[11px] font-medium text-emerald-200/80 mb-1.5">
-                    Total Setoran
-                  </p>
-                  <p className="font-display text-2xl font-bold tabular-nums text-white">
-                    {summary.totalSampahDisetorKg ?? 0}{' '}
-                    <span className="text-sm font-normal text-emerald-200/90">kg</span>
-                  </p>
-                  <p className="text-[11px] text-emerald-300/80 mt-1">
-                    dari {summary.totalTransaksiSetor ?? 0} transaksi
-                  </p>
+                  <span className="text-sm font-semibold text-emerald-200">Poin Aktif</span>
+                </div>
+
+                {/* Badge Poin Bulan Ini */}
+                <div className="mt-3">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold text-white backdrop-blur-xs">
+                    <TrendingUp size={13} className="text-emerald-300" />
+                    <span>+{(summary.totalPoinDidapat ?? 0).toLocaleString('id-ID')} poin bulan ini</span>
+                  </span>
+                </div>
+
+                {/* Frosted Sub-Panel: Total Setoran & Riwayat Link */}
+                <div className="mt-6 pt-5 border-t border-white/10 flex items-center justify-between">
+                  <div>
+                    <p className="text-[11px] text-emerald-200/80 font-medium">Total Sampah Disetor</p>
+                    <p className="text-base font-bold text-white mt-0.5">
+                      {summary.totalSampahDisetorKg ?? 0} kg{' '}
+                      <span className="text-xs font-normal text-emerald-200/70">
+                        ({summary.totalTransaksiSetor ?? 0}x setor)
+                      </span>
+                    </p>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => goToProtected('/riwayat')}
+                    className="inline-flex items-center gap-1 rounded-full bg-white/10 hover:bg-white/20 px-3.5 py-1.5 text-xs font-bold text-white transition-all cursor-pointer"
+                  >
+                    <span>Riwayat</span>
+                    <ChevronRight size={13} />
+                  </button>
                 </div>
               </div>
             )}
           </div>
 
-          {/* Card Dampak Kamu — white */}
-          <div className="flex flex-col justify-between rounded-2xl bg-white p-5 sm:p-6 shadow-card border border-gray-100">
+          {/* Card Dampak Kamu — Clean White Card with Deep Green Progress Bar */}
+          <div className="rounded-3xl bg-white border border-[#153d23]/10 p-6 sm:p-7 shadow-card flex flex-col justify-between">
             {loading ? (
               <div className="animate-pulse space-y-4">
-                <div className="h-5 w-32 bg-gray-200 rounded" />
+                <div className="h-5 w-36 bg-gray-200 rounded" />
                 <div className="h-9 w-28 bg-gray-200 rounded" />
                 <div className="h-3 w-full bg-gray-200 rounded-full" />
               </div>
             ) : (
               <>
                 <div>
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="flex h-7 w-7 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
-                      <Leaf size={15} strokeWidth={2.5} />
-                    </span>
-                    <p className="text-sm font-bold text-ink">Dampak Kamu</p>
+                  <div className="flex items-center gap-2.5 mb-3">
+                    <div className="h-8 w-8 rounded-full bg-[#153d23]/10 flex items-center justify-center text-[#153d23]">
+                      <Leaf size={16} strokeWidth={2.4} />
+                    </div>
+                    <div>
+                      <h3 className="font-display text-base font-bold text-[#0f2e1b]">Dampak Kamu</h3>
+                      <p className="text-[11px] text-gray-400">Kontribusi pelestarian lingkungan</p>
+                    </div>
                   </div>
 
-                  <div>
-                    <p className="font-display text-3xl font-bold text-ink tabular-nums">
-                      {summary.totalSampahDisetorKg ?? 0} <span className="text-base font-normal text-gray-400">kg</span>
+                  <div className="mt-4">
+                    <p className="font-display text-3xl sm:text-4xl font-black text-[#0f2e1b] tabular-nums">
+                      {summary.totalSampahDisetorKg ?? 0}{' '}
+                      <span className="text-base font-medium text-gray-400">kg</span>
                     </p>
-                    <p className="text-xs text-gray-500 mt-1">sampah berhasil dikumpulkan bulan ini</p>
+                    <p className="text-xs text-gray-500 mt-1 leading-relaxed">
+                      Sampah berhasil dicegah menumpuk di TPA dan siap didaur ulang.
+                    </p>
                   </div>
                 </div>
 
-                {/* Progress bar */}
-                <div className="mt-5">
-                  <div className="h-2 w-full rounded-full bg-gray-100 overflow-hidden">
+                {/* Progress Bar in Deep Green */}
+                <div className="mt-6 pt-4 border-t border-gray-100">
+                  <div className="h-2.5 w-full rounded-full bg-gray-100 overflow-hidden">
                     <div
-                      className="h-full rounded-full bg-brand-500 transition-all"
+                      className="h-full rounded-full bg-[#153d23] transition-all duration-700 ease-out"
                       style={{ width: `${targetPercent}%` }}
                     />
                   </div>
-                  <div className="flex items-center justify-between mt-2.5 text-[11px] text-gray-400">
-                    <span>Target bulan ini</span>
-                    <span className="font-semibold text-ink">
-                      {summary.totalSampahDisetorKg ?? 0} / {TARGET_KG} kg
-                      <span className="ml-1.5 font-medium text-gray-400">{targetPercent}%</span>
-                    </span>
+                  <div className="flex items-center justify-between mt-2.5 text-[11px] text-gray-500">
+                    <span>Target bulanan: 10 kg</span>
+                    <span className="font-bold text-[#0f2e1b]">{targetPercent}% Tercapai</span>
                   </div>
                 </div>
               </>
             )}
           </div>
-        </div>
+        </section>
       )}
 
-      {/* ── Section: Aksi Cepat ── */}
+      {/* ════════════════════════════════════════════════════════════
+          SECTION: AKSI CEPAT (Quick Actions)
+      ════════════════════════════════════════════════════════════ */}
       <section>
-        <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center justify-between mb-4 px-1">
           <div>
-            <h2 className="font-display text-base font-bold text-ink">Aksi Cepat</h2>
-            <p className="text-xs text-gray-400">Lakukan aksi kecil, beri dampak besar!</p>
+            <h2 className="font-display text-lg font-bold text-[#0f2e1b]">Aksi Cepat</h2>
+            <p className="text-xs text-gray-400">Akses cepat menu transaksi utama Anda.</p>
           </div>
-          <button
-            onClick={() => goToProtected('/setor')}
-            className="flex items-center gap-0.5 text-xs font-semibold text-emerald-700 hover:text-emerald-800 transition-colors cursor-pointer"
-          >
-            Lihat Semua <ChevronRight size={13} />
-          </button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
-          {/* Setor Sampah */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {/* Action 1: Setor Sampah */}
           <button
+            type="button"
             onClick={() => goToProtected('/setor')}
-            className="group flex items-center justify-between rounded-2xl bg-white p-4 shadow-card border border-gray-100 hover:border-emerald-200 hover:shadow-md transition-all text-left cursor-pointer"
+            className="group flex items-center justify-between rounded-3xl bg-white p-5 shadow-card border border-[#153d23]/10 hover:border-[#153d23]/30 hover:shadow-md transition-all text-left cursor-pointer"
           >
-            <div className="flex items-center gap-3 min-w-0">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-emerald-600 group-hover:bg-emerald-100 transition-colors">
+            <div className="flex items-center gap-3.5 min-w-0">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#153d23]/10 text-[#153d23] group-hover:bg-[#153d23] group-hover:text-white transition-colors duration-300">
                 <Recycle size={20} />
               </span>
               <div className="min-w-0">
-                <p className="text-sm font-bold text-ink line-clamp-1">Setor Sampah</p>
+                <p className="text-sm font-bold text-[#0f2e1b] group-hover:text-[#153d23] transition-colors">
+                  Setor Sampah
+                </p>
                 <p className="text-[11px] text-gray-400 mt-0.5">Ajukan setoran baru</p>
               </div>
             </div>
-            <ChevronRight size={16} className="shrink-0 text-gray-300 group-hover:text-emerald-600 group-hover:translate-x-0.5 transition-all ml-2" />
+            <ArrowUpRight size={18} className="text-gray-300 group-hover:text-[#153d23] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all ml-2 shrink-0" />
           </button>
 
-          {/* Tukar Poin */}
+          {/* Action 2: Tukar Poin */}
           <button
+            type="button"
             onClick={() => goToProtected('/hadiah')}
-            className="group flex items-center justify-between rounded-2xl bg-white p-4 shadow-card border border-gray-100 hover:border-amber-200 hover:shadow-md transition-all text-left cursor-pointer"
+            className="group flex items-center justify-between rounded-3xl bg-white p-5 shadow-card border border-[#153d23]/10 hover:border-[#153d23]/30 hover:shadow-md transition-all text-left cursor-pointer"
           >
-            <div className="flex items-center gap-3 min-w-0">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-amber-50 text-amber-600 group-hover:bg-amber-100 transition-colors">
+            <div className="flex items-center gap-3.5 min-w-0">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-amber-500/10 text-amber-700 group-hover:bg-amber-600 group-hover:text-white transition-colors duration-300">
                 <Gift size={20} />
               </span>
               <div className="min-w-0">
-                <p className="text-sm font-bold text-ink line-clamp-1">Tukar Poin</p>
+                <p className="text-sm font-bold text-[#0f2e1b] group-hover:text-[#153d23] transition-colors">
+                  Tukar Hadiah
+                </p>
                 <p className="text-[11px] text-gray-400 mt-0.5">Gunakan saldo poin</p>
               </div>
             </div>
-            <ChevronRight size={16} className="shrink-0 text-gray-300 group-hover:text-amber-600 group-hover:translate-x-0.5 transition-all ml-2" />
+            <ArrowUpRight size={18} className="text-gray-300 group-hover:text-amber-700 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all ml-2 shrink-0" />
           </button>
 
-          {/* Riwayat */}
+          {/* Action 3: Riwayat */}
           <button
+            type="button"
             onClick={() => goToProtected('/riwayat')}
-            className="group flex items-center justify-between rounded-2xl bg-white p-4 shadow-card border border-gray-100 hover:border-sky-200 hover:shadow-md transition-all text-left cursor-pointer"
+            className="group flex items-center justify-between rounded-3xl bg-white p-5 shadow-card border border-[#153d23]/10 hover:border-[#153d23]/30 hover:shadow-md transition-all text-left cursor-pointer"
           >
-            <div className="flex items-center gap-3 min-w-0">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-sky-50 text-sky-600 group-hover:bg-sky-100 transition-colors">
+            <div className="flex items-center gap-3.5 min-w-0">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-blue-500/10 text-blue-700 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
                 <ClipboardList size={20} />
               </span>
               <div className="min-w-0">
-                <p className="text-sm font-bold text-ink line-clamp-1">Riwayat</p>
-                <p className="text-[11px] text-gray-400 mt-0.5">Lihat aktivitas</p>
+                <p className="text-sm font-bold text-[#0f2e1b] group-hover:text-[#153d23] transition-colors">
+                  Riwayat
+                </p>
+                <p className="text-[11px] text-gray-400 mt-0.5">Pantau status transaksi</p>
               </div>
             </div>
-            <ChevronRight size={16} className="shrink-0 text-gray-300 group-hover:text-sky-600 group-hover:translate-x-0.5 transition-all ml-2" />
+            <ArrowUpRight size={18} className="text-gray-300 group-hover:text-blue-700 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all ml-2 shrink-0" />
           </button>
         </div>
       </section>
 
-      {/* ── Section: Jenis Sampah & Poin ── */}
-      <section>
-        <div className="flex items-center justify-between mb-3.5">
-          <div>
-            <h2 className="font-display text-base font-bold text-ink">Jenis Sampah & Poin</h2>
-            <p className="text-xs text-gray-400 mt-0.5">Pilih kategori untuk melihat detail harga dan poin.</p>
-          </div>
-          <Link
-            to="/kategori-sampah"
-            className="group flex items-center text-xs font-semibold text-emerald-700 hover:text-emerald-800 transition-colors"
-          >
-            Lihat Semua
-            <ChevronRight size={14} className="ml-0.5 group-hover:translate-x-0.5 transition-transform" />
-          </Link>
-        </div>
-
-        {/* Loading Skeleton */}
-        {loading && (
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-5">
-            {[1, 2, 3, 4].map((i) => (
-              <div
-                key={i}
-                className="animate-pulse flex flex-col rounded-2xl bg-white p-4 shadow-card border border-gray-100"
-              >
-                <div className="aspect-[16/10] w-full rounded-xl bg-gray-200 mb-3" />
-                <div className="h-4 w-3/4 bg-gray-200 rounded mb-2" />
-                <div className="h-3 w-1/2 bg-gray-200 rounded mb-3" />
-                <div className="h-6 w-24 bg-gray-200 rounded-full" />
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* Categories Grid */}
-        {!loading && (
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-5">
-            {kategori.slice(0, 4).map((k, idx) => {
-              const id = k.id ?? k.kategoriSampahId ?? idx
-              const fotoUrl = resolveFotoUrl(k.foto)
-              return (
-                <button
-                  key={id}
-                  onClick={() => goToProtected('/kategori-sampah')}
-                  className="group flex flex-col overflow-hidden rounded-2xl bg-white text-left shadow-card border border-gray-100 hover:border-emerald-200 hover:shadow-md transition-all cursor-pointer"
-                >
-                  {/* Foto */}
-                  <div className="relative aspect-[16/10] w-full overflow-hidden bg-gray-100">
-                    {fotoUrl ? (
-                      <>
-                        <img
-                          src={fotoUrl}
-                          alt={k.namaKategori}
-                          className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                          onError={(e) => {
-                            e.currentTarget.style.display = 'none'
-                            if (e.currentTarget.nextSibling) {
-                              e.currentTarget.nextSibling.style.display = 'flex'
-                            }
-                          }}
-                        />
-                        <div className="absolute inset-0" style={{ display: 'none' }}>
-                          <WasteIcon jenis={k.jenis} />
-                        </div>
-                      </>
-                    ) : (
-                      <WasteIcon jenis={k.jenis} />
-                    )}
-                  </div>
-
-                  {/* Details */}
-                  <div className="flex flex-1 flex-col gap-3 p-4">
-                    <div>
-                      <p className="text-xs sm:text-sm font-bold text-ink group-hover:text-emerald-700 transition-colors line-clamp-1">
-                        {k.namaKategori}
-                      </p>
-                      <p className="text-[11px] text-gray-400 mt-1 font-medium">
-                        Rp {(k.hargaPerKg).toLocaleString('id-ID')}/kg
-                      </p>
-                    </div>
-                    <div>
-                      <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 border border-emerald-100 px-2.5 py-1 text-[11px] font-bold text-emerald-700">
-                        <Star size={11} className="fill-amber-400 text-amber-500" />
-                        +{k.poinPerKg} Poin/kg
-                      </span>
-                    </div>
-                  </div>
-                </button>
-              )
-            })}
-          </div>
-        )}
-      </section>
-
-      {/* ── Section: Tahukah Kamu? ── */}
-      <div className="flex items-stretch overflow-hidden rounded-2xl bg-white shadow-card border border-gray-100">
-        <div className="relative w-32 sm:w-44 shrink-0 overflow-hidden bg-emerald-100">
-          <img
-            src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=400&q=80"
-            alt="Daur ulang sampah"
-            className="absolute inset-0 w-full h-full object-cover"
-            onError={(e) => {
-              e.currentTarget.style.display = 'none'
-            }}
-          />
-        </div>
-
-        <div className="flex flex-1 flex-col justify-center p-4 sm:p-5">
-          <div className="flex items-center gap-2 mb-1.5">
-            <span className="text-base">💡</span>
-            <p className="text-sm font-bold text-ink">Tahukah Kamu?</p>
-          </div>
-          <p className="text-xs text-gray-500 leading-relaxed">
-            Memisahkan sampah berdasarkan jenisnya dapat membantu proses daur ulang menjadi lebih efektif.
-          </p>
-          <button
-            onClick={() => goToProtected('/kategori-sampah')}
-            className="mt-3 self-start text-xs font-semibold text-emerald-700 hover:text-emerald-800 transition-colors flex items-center gap-0.5 cursor-pointer"
-          >
-            Pelajari lebih lanjut <ChevronRight size={13} />
-          </button>
-        </div>
-      </div>
-
-      {/* ── Row: Transaksi Terakhir + CTA ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-4 sm:gap-5">
+      {/* ════════════════════════════════════════════════════════════
+          ROW: TRANSAKSI TERAKHIR + EDUKASI DAUR ULANG
+      ════════════════════════════════════════════════════════════ */}
+      <div className="grid grid-cols-1 lg:grid-cols-[1.35fr_1fr] gap-5">
         {/* Transaksi Terakhir */}
-        {!isGuest && (
-          <div className="rounded-2xl bg-white shadow-card border border-gray-100 overflow-hidden flex flex-col justify-between">
+        {!isGuest ? (
+          <div className="rounded-3xl bg-white shadow-card border border-[#153d23]/10 overflow-hidden flex flex-col justify-between">
             <div>
-              <div className="flex items-center justify-between px-4 py-3.5 border-b border-gray-100">
-                <h3 className="font-display text-sm font-bold text-ink">Transaksi Terakhir</h3>
+              <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+                <div>
+                  <h3 className="font-display text-sm font-bold text-[#0f2e1b]">Transaksi Terakhir</h3>
+                  <p className="text-[10px] text-gray-400">Aktivitas setor dan tukar terbaru</p>
+                </div>
                 <Link
                   to="/riwayat"
-                  className="text-xs font-semibold text-emerald-700 hover:text-emerald-800 flex items-center gap-0.5 transition-colors"
+                  className="text-xs font-bold text-[#153d23] hover:text-[#0f2e1b] flex items-center gap-0.5 transition-colors"
                 >
-                  Lihat Semua <ChevronRight size={13} />
+                  <span>Lihat Semua</span>
+                  <ChevronRight size={13} />
                 </Link>
               </div>
-              <div className="divide-y divide-gray-100">
+
+              <div className="divide-y divide-gray-100 p-2">
                 {loading && (
                   <div className="p-4 space-y-3">
                     <div className="h-4 w-32 bg-gray-100 rounded animate-pulse" />
@@ -530,65 +531,73 @@ export default function Beranda() {
                 {!loading && summary.transaksiTerakhirTukar && (
                   <TransaksiItem
                     type="tukar"
-                    title="Tukar Poin"
+                    title="Tukar Hadiah"
                     subtitle={summary.transaksiTerakhirTukar.hadiah}
                     date={summary.transaksiTerakhirTukar.tanggal}
                     poin={summary.transaksiTerakhirTukar.poin}
                   />
                 )}
                 {!loading && !summary.transaksiTerakhirSetor && !summary.transaksiTerakhirTukar && (
-                  <div className="px-4 py-6 text-center text-xs text-gray-400">
-                    Belum ada transaksi
+                  <div className="px-4 py-8 text-center text-xs text-gray-400">
+                    Belum ada riwayat transaksi.
                   </div>
                 )}
               </div>
             </div>
           </div>
-        )}
-
-        {/* CTA Card — light green with plant illustration */}
-        <div className="relative overflow-hidden rounded-2xl bg-emerald-50/70 border border-emerald-100 p-5 sm:p-6 flex flex-col justify-between min-h-[170px]">
-          <div className="absolute -bottom-2 -right-2 w-28 h-36 opacity-75 pointer-events-none">
-            <PlantCtaIllustration className="w-full h-full" />
-          </div>
-
-          <div className="relative z-10 max-w-[70%]">
-            <p className="text-xs font-bold text-emerald-700 mb-1">🌿 Untuk lingkungan</p>
-            <h3 className="font-display text-base font-bold text-ink leading-snug">
-              Jangan lupa, setor sampahmu hari ini!
-            </h3>
-            <p className="mt-1 text-xs text-gray-600 leading-relaxed">
-              Bersama kita wujudkan lingkungan yang lebih bersih.
-            </p>
-          </div>
-
-          <button
-            onClick={() => goToProtected('/setor')}
-            className="relative z-10 mt-4 self-start rounded-full bg-emerald-700 px-5 py-2.5 text-xs font-bold text-white hover:bg-emerald-800 transition-colors shadow-sm flex items-center gap-1.5 cursor-pointer"
-          >
-            Setor Sekarang <ChevronRight size={14} />
-          </button>
-        </div>
-
-        {/* Guest CTA */}
-        {isGuest && (
-          <div className="rounded-2xl bg-white shadow-card border border-emerald-100 p-5 flex flex-col justify-center items-center text-center gap-3">
-            <span className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
+        ) : (
+          <div className="rounded-3xl bg-white shadow-card border border-[#153d23]/10 p-6 flex flex-col justify-center items-center text-center gap-3">
+            <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#153d23]/10 text-[#153d23]">
               <Recycle size={22} />
             </span>
             <div>
-              <h3 className="font-display text-sm font-bold text-ink">Mulai Setoran Anda</h3>
-              <p className="text-xs text-gray-400 mt-0.5">Masuk untuk lihat riwayat & tukar poin</p>
+              <h3 className="font-display text-base font-bold text-[#0f2e1b]">Mulai Setoran Pertama Anda</h3>
+              <p className="text-xs text-gray-400 mt-1 max-w-xs">
+                Masuk ke akun nasabah Anda untuk memantau saldo poin, mengajukan setoran, dan menukarkan hadiah.
+              </p>
             </div>
             <button
+              type="button"
               onClick={() => navigate('/login')}
-              className="rounded-full bg-emerald-700 px-5 py-2 text-xs font-bold text-white hover:bg-emerald-800 transition-colors"
+              className="mt-2 rounded-full bg-[#153d23] hover:bg-[#0f2e1b] px-6 py-2.5 text-xs font-bold text-white transition-colors shadow-sm"
             >
               Masuk Sekarang
             </button>
           </div>
         )}
+
+        {/* Edukasi Card / Eco Banner in Deep Forest Green */}
+        <div className="relative overflow-hidden rounded-3xl bg-[#0f2e1b] p-6 sm:p-7 text-white shadow-card flex flex-col justify-between min-h-[190px]">
+          {/* Subtle Graphic in Corner */}
+          <div className="absolute -right-6 -bottom-6 w-36 h-36 rounded-full bg-white/5 pointer-events-none" />
+
+          <div className="relative z-10">
+            <div className="flex items-center gap-2 mb-2 text-emerald-300 text-xs font-bold">
+              <ShieldCheck size={15} />
+              <span>Daur Ulang Bertanggung Jawab</span>
+            </div>
+            <h3 className="font-display text-lg font-bold text-white leading-snug">
+              Pastikan Sampah Kering &amp; Terpilah
+            </h3>
+            <p className="mt-1.5 text-xs text-white/70 leading-relaxed font-light">
+              Pemisahan botol, kaleng, dan kardus sebelum dibawa ke Bank Sampah mempercepat proses verifikasi dan menjaga kualitas daur ulang.
+            </p>
+          </div>
+
+          <div className="relative z-10 mt-5 pt-3">
+            <button
+              type="button"
+              onClick={() => goToProtected('/kategori-sampah')}
+              className="inline-flex items-center gap-1.5 rounded-full bg-white text-[#0f2e1b] hover:bg-gray-100 px-5 py-2 text-xs font-bold transition-all cursor-pointer shadow-md"
+            >
+              <span>Pelajari Jenis Sampah</span>
+              <ChevronRight size={13} />
+            </button>
+          </div>
+        </div>
       </div>
+
     </div>
   )
 }
+
