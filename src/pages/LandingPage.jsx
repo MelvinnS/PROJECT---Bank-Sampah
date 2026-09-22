@@ -96,19 +96,19 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-6 sm:px-10 h-20 flex items-center justify-between">
           {/* Brand Logo */}
           <div className="flex items-center gap-2.5 cursor-pointer" onClick={handleEnter}>
-            <div className="h-9 w-9 rounded-xl bg-[#153d23] flex items-center justify-center text-white shadow-md shadow-[#153d23]/20">
-              <Leaf size={18} strokeWidth={2.4} />
+            <div className="h-10 w-10 rounded-2xl bg-[#153d23] flex items-center justify-center text-white shadow-md shadow-[#153d23]/20">
+              <Recycle size={20} strokeWidth={2.4} />
             </div>
-            <span className="font-display text-lg font-extrabold text-[#0f2e1b] tracking-tight">
+            <span className="font-display text-xl font-black text-[#0f2e1b] tracking-tight">
               Bank Sampah
             </span>
           </div>
 
           {/* Centered Navigation Links */}
           <nav className="hidden md:flex items-center gap-8 text-xs font-semibold text-gray-600">
-            <a href="#hero" className="text-[#153d23] font-bold relative py-1">
-              Beranda
-              <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-[#153d23]" />
+            <a href="#hero" className="flex flex-col items-center py-1">
+              <span className="text-[#0f2e1b] font-bold">Beranda</span>
+              <span className="h-1.5 w-1.5 rounded-full bg-[#153d23] mt-0.5" />
             </a>
             <a href="#fitur" className="hover:text-[#153d23] transition-colors py-1">
               Tentang Kami
@@ -119,35 +119,35 @@ export default function LandingPage() {
           </nav>
 
           {/* Right Action Icons & Masuk Button */}
-          <div className="flex items-center gap-3 sm:gap-4">
+          <div className="flex items-center gap-2.5 sm:gap-3.5">
             <button
               type="button"
               onClick={handleEnter}
               title="Pencarian"
-              className="h-9 w-9 rounded-full flex items-center justify-center text-gray-500 hover:text-[#153d23] hover:bg-[#153d23]/5 transition-colors"
+              className="h-9 w-9 rounded-full flex items-center justify-center text-gray-500 hover:text-[#153d23] hover:bg-[#153d23]/5 transition-colors cursor-pointer"
             >
-              <Search size={16} />
+              <Search size={17} />
             </button>
             <button
               type="button"
               onClick={handleEnter}
               title="Akun"
-              className="h-9 w-9 rounded-full flex items-center justify-center text-gray-500 hover:text-[#153d23] hover:bg-[#153d23]/5 transition-colors"
+              className="h-9 w-9 rounded-full flex items-center justify-center text-gray-500 hover:text-[#153d23] hover:bg-[#153d23]/5 transition-colors cursor-pointer"
             >
-              <User size={16} />
+              <User size={17} />
             </button>
             <button
               type="button"
               onClick={handleEnter}
               title="Notifikasi"
-              className="h-9 w-9 rounded-full flex items-center justify-center text-gray-500 hover:text-[#153d23] hover:bg-[#153d23]/5 transition-colors"
+              className="h-9 w-9 rounded-full flex items-center justify-center text-gray-500 hover:text-[#153d23] hover:bg-[#153d23]/5 transition-colors cursor-pointer"
             >
-              <Bell size={16} />
+              <Bell size={17} />
             </button>
             <button
               type="button"
               onClick={handleEnter}
-              className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-[#153d23] hover:bg-[#0f2e1b] px-5 py-2.5 text-xs font-bold text-white shadow-md shadow-[#153d23]/25 active:scale-95 transition-all cursor-pointer"
+              className="inline-flex items-center gap-1.5 rounded-full bg-[#153d23] hover:bg-[#0f2e1b] px-5 py-2.5 text-xs font-bold text-white shadow-md shadow-[#153d23]/25 active:scale-95 transition-all cursor-pointer ml-1"
             >
               <span>Masuk</span>
               <ArrowRight size={13} />
@@ -157,201 +157,270 @@ export default function LandingPage() {
       </header>
 
       {/* ════════════════════════════════════════════════════════
-          SECTION 1 — HERO (Layout matching reference image)
+          SECTION 1 — HERO / BERANDA (Persis Sesuai Referensi Gambar)
       ════════════════════════════════════════════════════════ */}
-      <section id="hero" className="relative min-h-[92vh] pt-28 pb-16 lg:pt-36 lg:pb-24 overflow-hidden flex items-center">
-        {/* Subtle Ambient Background Gradients in Deep Green Tones */}
-        <div className="absolute -top-32 right-10 w-[550px] h-[550px] rounded-full bg-[#153d23]/5 blur-[120px] pointer-events-none" />
-        <div className="absolute top-1/2 left-0 w-[380px] h-[380px] rounded-full bg-[#1b4332]/5 blur-[100px] pointer-events-none" />
+      <section id="hero" className="relative pt-28 pb-16 lg:pt-36 lg:pb-24 overflow-hidden text-center">
+        {/* Subtle Organic Background Waves on Left & Right */}
+        <div className="pointer-events-none absolute top-12 -left-48 w-[450px] h-[550px] rounded-full bg-[#e8f3ec]/80 blur-3xl" />
+        <div className="pointer-events-none absolute top-24 -right-48 w-[450px] h-[550px] rounded-full bg-[#edf6f0]/80 blur-3xl" />
 
-        <div className="relative max-w-7xl mx-auto px-6 sm:px-10 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-            
-            {/* ── Left Column: Typography & Action Widgets ── */}
-            <div className="lg:col-span-6 z-10">
-              <div style={{ animation: 'slideUpFade 0.7s cubic-bezier(0.16, 1, 0.3, 1) both' }}>
-                <h1 className="font-display text-5xl sm:text-6xl xl:text-7xl font-black text-[#0f2e1b] leading-[1.04] tracking-tight">
-                  Welcome
-                  <br />
-                  to <span className="text-[#153d23] underline decoration-[#153d23]/30 underline-offset-8">Bank Sampah</span>
-                </h1>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* ── 1. Centered Big Headline ── */}
+          <div className="max-w-3xl mx-auto" style={{ animation: 'slideUpFade 0.7s cubic-bezier(0.16, 1, 0.3, 1) both' }}>
+            <h1 className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-[76px] font-black text-[#12361f] tracking-tight leading-[1.08] text-center">
+              Welcome<br />
+              to Bank Sampah
+            </h1>
 
-                <p className="mt-5 text-sm sm:text-base text-gray-600 font-medium max-w-md leading-relaxed flex items-center gap-2">
-                  <span>Platform Digital Pengelolaan Sampah</span>
-                  <span className="inline-block text-[#153d23]">💎</span>
-                </p>
-                <p className="text-xs sm:text-sm text-gray-400 font-normal">
-                  Setor sampah daur ulang, catat akurat &amp; kumpulkan poin bernilai.
-                </p>
+            {/* Subtitle with Diamond Emoji */}
+            <div className="mt-4 flex flex-col items-center gap-1">
+              <p className="font-bold text-xs sm:text-sm text-[#1b4332] flex items-center justify-center gap-1.5">
+                <span>Platform Digital Pengelolaan Sampah</span>
+                <span className="text-xs">💎</span>
+              </p>
+              <p className="text-xs text-gray-500 max-w-md">
+                Setor sampah daur ulang, catat akurat &amp; kumpulkan poin bernilai.
+              </p>
+            </div>
+          </div>
 
-                {/* Primary CTA Button */}
-                <div className="mt-7 flex items-center gap-4">
-                  <button
-                    type="button"
-                    onClick={handleEnter}
-                    className="group inline-flex items-center gap-2.5 rounded-full bg-[#153d23] hover:bg-[#0f2e1b] px-8 py-3.5 text-sm font-bold text-white shadow-xl shadow-[#153d23]/25 active:scale-[0.98] transition-all cursor-pointer"
-                  >
-                    <span>Masuk ke Bank Sampah</span>
-                    <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
-                  </button>
-                </div>
-
-                {/* Stats & Quick Cards Row (Exact arrangement as reference) */}
-                <div className="mt-10 sm:mt-12 flex flex-wrap items-center gap-4 pt-4 border-t border-[#153d23]/10">
-                  {/* Users Watching / Nasabah Counter Widget */}
-                  <div className="flex items-center gap-3 rounded-2xl bg-white border border-[#153d23]/10 p-3 px-4 shadow-sm">
-                    <div className="h-11 w-11 rounded-full border-2 border-[#153d23]/20 flex items-center justify-center text-[#153d23] bg-[#153d23]/5">
-                      <Users size={18} />
-                    </div>
-                    <div>
-                      <p className="text-[10px] uppercase font-bold text-gray-400 tracking-wider">
-                        Nasabah Aktif
-                      </p>
-                      <p className="font-display text-xl font-black text-[#0f2e1b] tracking-tight">
-                        316,457
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Feature Card 1 */}
-                  <div className="flex items-center gap-3 rounded-2xl bg-white border border-[#153d23]/10 p-3 px-4 shadow-sm hover:border-[#153d23]/30 transition-all">
-                    <div className="h-9 w-9 rounded-xl bg-[#153d23]/10 flex items-center justify-center text-[#153d23]">
-                      <Gift size={16} />
-                    </div>
-                    <div>
-                      <p className="text-xs font-bold text-[#0f2e1b] leading-tight">
-                        Katalog Hadiah
-                      </p>
-                      <p className="text-[10px] text-gray-400">100+ reward tersedia</p>
-                    </div>
-                  </div>
-
-                  {/* Feature Card 2 */}
-                  <div className="flex items-center gap-3 rounded-2xl bg-white border border-[#153d23]/10 p-3 px-4 shadow-sm hover:border-[#153d23]/30 transition-all">
-                    <div className="h-9 w-9 rounded-xl bg-[#153d23]/10 flex items-center justify-center text-[#153d23]">
-                      <Search size={16} />
-                    </div>
-                    <div>
-                      <p className="text-xs font-bold text-[#0f2e1b] leading-tight">
-                        Cek Nilai Poin
-                      </p>
-                      <p className="text-[10px] text-gray-400">Perhitungan per kg</p>
-                    </div>
-                  </div>
-                </div>
+          {/* ── 2. Shelf of 7 Undulating Cards with Left & Right Floating Annotations ── */}
+          <div className="relative mt-8 sm:mt-11">
+            {/* Left Floating Badge & Curved Arrow */}
+            <div className="hidden lg:flex absolute left-8 xl:left-14 -top-3 flex-col items-center z-20 pointer-events-none select-none">
+              <div className="inline-flex items-center gap-1.5 rounded-full bg-[#2d6a4f] text-white px-3.5 py-1.5 text-xs font-bold shadow-md transform -rotate-[7deg]">
+                <Recycle size={13} strokeWidth={2.4} />
+                <span>daur ulang</span>
               </div>
+              {/* Hand-drawn style curved arrow pointing to the cards */}
+              <svg width="44" height="42" viewBox="0 0 44 42" fill="none" className="text-[#2d6a4f] ml-6 mt-1">
+                <path d="M6 4 C16 10, 26 22, 22 36" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+                <path d="M15 31 L22 37 L27 30" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
             </div>
 
-            {/* ── Right Column: Abstract Floating Photo Collage (EXACT match to reference) ── */}
-            <div className="lg:col-span-6 relative flex justify-center items-center py-6 lg:py-0">
-              {/* Tilted Perspective Plane */}
-              <div
-                className="relative grid grid-cols-3 gap-4 sm:gap-5 transform -rotate-[11deg] hover:-rotate-[9deg] transition-transform duration-700 ease-out"
-                style={{
-                  perspective: '1000px',
-                  animation: 'floatCollage 6s ease-in-out infinite',
-                }}
-              >
-                {/* ── Column 1 (Left, slightly pushed down) ── */}
-                <div className="space-y-4 pt-10">
-                  {/* Top card: Atmospheric deep green card */}
-                  <div className="h-36 sm:h-44 w-28 sm:w-36 rounded-3xl bg-gradient-to-br from-[#153d23] to-[#0f2e1b] shadow-xl p-3 flex flex-col justify-between text-white/90 transform hover:scale-105 transition-transform duration-300">
-                    <div className="h-7 w-7 rounded-full bg-white/20 backdrop-blur-xs flex items-center justify-center">
-                      <Leaf size={14} className="text-white" />
-                    </div>
-                    <div>
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-200">
-                        Eco Living
-                      </span>
-                      <p className="text-xs font-black leading-tight text-white mt-0.5">
-                        Daur Ulang
-                      </p>
-                    </div>
-                  </div>
+            {/* Right Floating Badge & Curved Arrow */}
+            <div className="hidden lg:flex absolute right-8 xl:right-14 -top-3 flex-col items-center z-20 pointer-events-none select-none">
+              <div className="inline-flex items-center gap-1.5 rounded-full bg-[#2d6a4f] text-white px-3.5 py-1.5 text-xs font-bold shadow-md transform rotate-[7deg]">
+                <Star size={13} className="fill-white text-white" />
+                <span>jadi poin</span>
+              </div>
+              {/* Hand-drawn style curved arrow pointing to the cards */}
+              <svg width="44" height="42" viewBox="0 0 44 42" fill="none" className="text-[#2d6a4f] mr-6 mt-1">
+                <path d="M38 4 C28 10, 18 22, 22 36" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+                <path d="M17 30 L22 37 L29 31" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
 
-                  {/* Bottom card: Kaleng / Logam Image */}
-                  <div className="group relative h-40 sm:h-48 w-28 sm:w-36 rounded-3xl overflow-hidden shadow-xl border-2 border-white/60 bg-gray-100 transform hover:scale-105 transition-transform duration-300">
-                    <img
-                      src={sampahKalengImg}
-                      alt="Sampah Logam & Kaleng"
-                      className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-2.5">
-                      <span className="text-[10px] font-bold text-white tracking-wide">
-                        Logam &amp; Kaleng
-                      </span>
-                    </div>
+            {/* 7 Cards Shelf Ribbon */}
+            <div className="flex items-center justify-center overflow-x-auto py-6 px-2 no-scrollbar">
+              <div className="flex items-center justify-center -space-x-3 sm:-space-x-4 md:-space-x-5 lg:-space-x-6">
+                
+                {/* ── CARD 1: Botol Plastik / Eco Living ── */}
+                <div
+                  onClick={handleEnter}
+                  className="group relative w-28 h-40 sm:w-36 sm:h-52 md:w-40 md:h-56 lg:w-44 lg:h-60 rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl border-2 sm:border-[3px] border-white bg-gray-100 cursor-pointer transform -rotate-[8deg] translate-y-4 hover:rotate-0 hover:-translate-y-5 hover:scale-108 hover:z-30 transition-all duration-300 ease-out shrink-0"
+                >
+                  <img
+                    src="https://images.unsplash.com/photo-1530587191325-3db32d826c18?w=600&auto=format&fit=crop&q=80"
+                    alt="Plastik Daur Ulang"
+                    className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    onError={(e) => { e.currentTarget.src = sampahBotolImg }}
+                  />
+                  {/* Top-left circular badge */}
+                  <div className="absolute top-2.5 left-2.5 h-6 w-6 sm:h-7 sm:w-7 rounded-full bg-[#153d23]/80 backdrop-blur-xs flex items-center justify-center text-white shadow-xs">
+                    <Leaf size={13} strokeWidth={2.4} />
                   </div>
-                </div>
-
-                {/* ── Column 2 (Center, elevated high) ── */}
-                <div className="space-y-4 -mt-6">
-                  {/* Top card: Real Photo of Botol / People */}
-                  <div className="group relative h-48 sm:h-56 w-32 sm:w-40 rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-gray-100 transform hover:scale-105 transition-transform duration-300">
-                    <img
-                      src={sampahBotolImg}
-                      alt="Botol Kaca Bening"
-                      className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0f2e1b]/80 via-transparent to-transparent flex items-end p-3">
-                      <div>
-                        <span className="inline-block px-2 py-0.5 rounded-full bg-[#153d23] text-white text-[9px] font-bold">
-                          Kaca Bening
-                        </span>
-                        <p className="text-xs font-bold text-white mt-1">Nilai Tinggi</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Bottom card: Reward Minyak */}
-                  <div className="group relative h-44 sm:h-52 w-32 sm:w-40 rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-gray-100 transform hover:scale-105 transition-transform duration-300">
-                    <img
-                      src={hadiahMinyakImg}
-                      alt="Hadiah Minyak Goreng"
-                      className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                    <div className="absolute top-2.5 right-2.5">
-                      <span className="h-6 w-6 rounded-full bg-white/90 shadow-md flex items-center justify-center text-[#153d23]">
-                        <Star size={12} className="fill-[#153d23]" />
-                      </span>
-                    </div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end p-3">
-                      <p className="text-xs font-bold text-white">Tukar Sembako</p>
-                    </div>
+                  {/* Bottom Text Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-2.5 sm:p-3 text-left">
+                    <span className="text-[8px] sm:text-[9px] font-bold uppercase tracking-wider text-emerald-300">
+                      ECO LIVING
+                    </span>
+                    <p className="text-xs sm:text-sm font-bold text-white leading-tight mt-0.5">
+                      Daur Ulang
+                    </p>
                   </div>
                 </div>
 
-                {/* ── Column 3 (Right, staggered) ── */}
-                <div className="space-y-4 pt-4">
-                  {/* Top card: Sky / Atmospheric card */}
-                  <div className="h-32 sm:h-40 w-28 sm:w-36 rounded-3xl bg-gradient-to-br from-[#1b4332] to-[#2d6a4f] shadow-xl p-3 flex flex-col justify-between text-white transform hover:scale-105 transition-transform duration-300">
-                    <div className="flex items-center justify-between">
-                      <Sparkles size={14} className="text-amber-300" />
-                      <span className="text-[10px] font-extrabold text-white/80">+250 Poin</span>
-                    </div>
-                    <p className="text-xs font-black text-white leading-tight">
+                {/* ── CARD 2: Kaca Bening Nilai Tinggi ── */}
+                <div
+                  onClick={handleEnter}
+                  className="group relative w-28 h-40 sm:w-36 sm:h-52 md:w-40 md:h-56 lg:w-44 lg:h-60 rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl border-2 sm:border-[3px] border-white bg-gray-100 cursor-pointer transform -rotate-[4deg] translate-y-1 hover:rotate-0 hover:-translate-y-5 hover:scale-108 hover:z-30 transition-all duration-300 ease-out shrink-0"
+                >
+                  <img
+                    src="https://images.unsplash.com/photo-1516996087931-5ae405802f9f?w=600&auto=format&fit=crop&q=80"
+                    alt="Kaca Bening Nilai Tinggi"
+                    className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    onError={(e) => { e.currentTarget.src = sampahBotolImg }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-2.5 sm:p-3 text-left">
+                    <p className="text-xs sm:text-sm font-bold text-white leading-tight">
+                      Kaca Bening
+                    </p>
+                    <span className="text-[9px] sm:text-[10px] text-emerald-300 font-medium">
+                      Nilai Tinggi
+                    </span>
+                  </div>
+                </div>
+
+                {/* ── CARD 3: Tumpukan Kardus / Lingkungan Bersih ── */}
+                <div
+                  onClick={handleEnter}
+                  className="group relative w-28 h-40 sm:w-36 sm:h-52 md:w-40 md:h-56 lg:w-44 lg:h-60 rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl border-2 sm:border-[3px] border-white bg-gray-100 cursor-pointer transform -rotate-[1deg] -translate-y-2 hover:rotate-0 hover:-translate-y-5 hover:scale-108 hover:z-30 transition-all duration-300 ease-out shrink-0"
+                >
+                  <img
+                    src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=600&auto=format&fit=crop&q=80"
+                    alt="Lingkungan Bersih Kardus"
+                    className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    onError={(e) => { e.currentTarget.src = sampahKardusImg }}
+                  />
+                  {/* Top-left circular badge */}
+                  <div className="absolute top-2.5 left-2.5 h-6 w-6 sm:h-7 sm:w-7 rounded-full bg-[#153d23]/80 backdrop-blur-xs flex items-center justify-center text-white shadow-xs">
+                    <Star size={12} className="fill-white" />
+                  </div>
+                  {/* Top-right points pill */}
+                  <div className="absolute top-2.5 right-2.5 bg-[#2d6a4f] text-white text-[8px] sm:text-[9px] font-extrabold px-2 py-0.5 rounded-full shadow-xs">
+                    +290 Poin
+                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-2.5 sm:p-3 text-left">
+                    <p className="text-xs sm:text-sm font-bold text-white leading-tight">
                       Lingkungan Bersih
                     </p>
                   </div>
+                </div>
 
-                  {/* Bottom card: White-framed Kardus Image */}
-                  <div className="group relative h-44 sm:h-52 w-28 sm:w-36 rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-gray-100 transform hover:scale-105 transition-transform duration-300">
-                    <img
-                      src={sampahKardusImg}
-                      alt="Kardus & Kertas"
-                      className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0f2e1b]/70 via-transparent to-transparent flex items-end p-2.5">
-                      <span className="text-[10px] font-bold text-white">
-                        Kardus &amp; Kertas
-                      </span>
-                    </div>
+                {/* ── CARD 4 (CENTER): Botol Kaca & Kardus ── */}
+                <div
+                  onClick={handleEnter}
+                  className="group relative w-28 h-40 sm:w-36 sm:h-52 md:w-40 md:h-56 lg:w-44 lg:h-60 rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border-2 sm:border-[3px] border-white bg-gray-100 cursor-pointer transform rotate-[1deg] -translate-y-3 hover:rotate-0 hover:-translate-y-5 hover:scale-108 hover:z-30 transition-all duration-300 ease-out shrink-0"
+                >
+                  <img
+                    src="https://images.unsplash.com/photo-1605600659873-d808a13e4d2a?w=600&auto=format&fit=crop&q=80"
+                    alt="Kardus & Kertas"
+                    className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    onError={(e) => { e.currentTarget.src = sampahBotolImg }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-2.5 sm:p-3 text-left">
+                    <p className="text-xs sm:text-sm font-bold text-white leading-tight">
+                      Kardus &amp; Kertas
+                    </p>
                   </div>
                 </div>
+
+                {/* ── CARD 5: Kantong Kaleng / Logam & Kaleng ── */}
+                <div
+                  onClick={handleEnter}
+                  className="group relative w-28 h-40 sm:w-36 sm:h-52 md:w-40 md:h-56 lg:w-44 lg:h-60 rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl border-2 sm:border-[3px] border-white bg-gray-100 cursor-pointer transform rotate-[3deg] -translate-y-1 hover:rotate-0 hover:-translate-y-5 hover:scale-108 hover:z-30 transition-all duration-300 ease-out shrink-0"
+                >
+                  <img
+                    src="https://images.unsplash.com/photo-1591193686104-fddba4d0e4d8?w=600&auto=format&fit=crop&q=80"
+                    alt="Logam & Kaleng"
+                    className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    onError={(e) => { e.currentTarget.src = sampahKalengImg }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-2.5 sm:p-3 text-left">
+                    <p className="text-xs sm:text-sm font-bold text-white leading-tight">
+                      Logam &amp; Kaleng
+                    </p>
+                  </div>
+                </div>
+
+                {/* ── CARD 6: Minyak Goreng / Tukar Sembako ── */}
+                <div
+                  onClick={handleEnter}
+                  className="group relative w-28 h-40 sm:w-36 sm:h-52 md:w-40 md:h-56 lg:w-44 lg:h-60 rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl border-2 sm:border-[3px] border-white bg-gray-100 cursor-pointer transform rotate-[5deg] translate-y-1 hover:rotate-0 hover:-translate-y-5 hover:scale-108 hover:z-30 transition-all duration-300 ease-out shrink-0"
+                >
+                  <img
+                    src="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=600&auto=format&fit=crop&q=80"
+                    alt="Tukar Sembako Minyak"
+                    className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    onError={(e) => { e.currentTarget.src = hadiahMinyakImg }}
+                  />
+                  {/* Top-right star badge */}
+                  <div className="absolute top-2.5 right-2.5 h-6 w-6 sm:h-7 sm:w-7 rounded-full bg-[#153d23]/80 backdrop-blur-xs flex items-center justify-center text-white shadow-xs">
+                    <Star size={12} className="fill-white" />
+                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-2.5 sm:p-3 text-left">
+                    <p className="text-xs sm:text-sm font-bold text-white leading-tight">
+                      Tukar Sembako
+                    </p>
+                  </div>
+                </div>
+
+                {/* ── CARD 7: Box Kardus / Kardus & Kertas ── */}
+                <div
+                  onClick={handleEnter}
+                  className="group relative w-28 h-40 sm:w-36 sm:h-52 md:w-40 md:h-56 lg:w-44 lg:h-60 rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl border-2 sm:border-[3px] border-white bg-gray-100 cursor-pointer transform rotate-[8deg] translate-y-4 hover:rotate-0 hover:-translate-y-5 hover:scale-108 hover:z-30 transition-all duration-300 ease-out shrink-0"
+                >
+                  <img
+                    src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=600&auto=format&fit=crop&q=80"
+                    alt="Kardus & Kertas"
+                    className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    onError={(e) => { e.currentTarget.src = sampahKardusImg }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-2.5 sm:p-3 text-left">
+                    <p className="text-xs sm:text-sm font-bold text-white leading-tight">
+                      Kardus &amp; Kertas
+                    </p>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          {/* ── 3. Floating 3 Stats Pill Cards ── */}
+          <div className="mt-8 sm:mt-10 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+            {/* Pill 1: Nasabah Aktif */}
+            <div className="flex items-center gap-3 rounded-2xl bg-white border border-[#153d23]/10 px-4 py-2.5 shadow-sm">
+              <div className="h-9 w-9 rounded-full bg-[#153d23]/10 text-[#153d23] flex items-center justify-center shrink-0">
+                <User size={17} />
+              </div>
+              <div className="text-left">
+                <p className="text-[9px] uppercase font-bold tracking-wider text-gray-400">
+                  NASABAH AKTIF
+                </p>
+                <p className="font-display text-base sm:text-lg font-black text-[#0f2e1b] tracking-tight">
+                  316,457
+                </p>
               </div>
             </div>
 
+            {/* Pill 2: Katalog Hadiah */}
+            <div className="flex items-center gap-3 rounded-2xl bg-white border border-[#153d23]/10 px-4 py-2.5 shadow-sm">
+              <div className="h-9 w-9 rounded-full bg-[#153d23]/10 text-[#153d23] flex items-center justify-center shrink-0">
+                <Gift size={17} />
+              </div>
+              <div className="text-left">
+                <p className="text-xs font-bold text-[#0f2e1b]">Katalog Hadiah</p>
+                <p className="text-[10px] text-gray-400">100+ reward tersedia</p>
+              </div>
+            </div>
+
+            {/* Pill 3: Cek Nilai Poin */}
+            <div className="flex items-center gap-3 rounded-2xl bg-white border border-[#153d23]/10 px-4 py-2.5 shadow-sm">
+              <div className="h-9 w-9 rounded-full bg-[#153d23]/10 text-[#153d23] flex items-center justify-center shrink-0">
+                <Search size={17} />
+              </div>
+              <div className="text-left">
+                <p className="text-xs font-bold text-[#0f2e1b]">Cek Nilai Poin</p>
+                <p className="text-[10px] text-gray-400">Perhitungan per kg</p>
+              </div>
+            </div>
           </div>
+
+          {/* ── 4. Main CTA Button ── */}
+          <div className="mt-6 flex justify-center">
+            <button
+              type="button"
+              onClick={handleEnter}
+              className="group inline-flex items-center gap-2 rounded-full bg-[#153d23] hover:bg-[#0f2e1b] px-8 py-3.5 text-xs sm:text-sm font-bold text-white shadow-xl shadow-[#153d23]/25 active:scale-95 transition-all cursor-pointer"
+            >
+              <span>Masuk ke Bank Sampah</span>
+              <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
+            </button>
+          </div>
+
         </div>
       </section>
 
